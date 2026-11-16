@@ -1,0 +1,6 @@
+{
+  "name": "LENTERA – Petualangan Bunyi",
+  "description": "Multimedia Pembelajaran Interaktif (MPI) 21 Slide bertema petualangan sains bunyi untuk Kelas VI SD (Fase C) — IPAS, Bahasa Indonesia, dan Seni Musik.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

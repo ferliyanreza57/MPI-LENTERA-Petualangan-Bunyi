@@ -1,0 +1,2748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENTERA – Petualangan Bunyi (MPI Interaktif 21 Slide)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-title: 'Fredoka', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+        .font-game {
+            font-family: var(--font-title);
+        }
+        .wood-panel {
+            background: linear-gradient(180deg, #8D5B3C 0%, #5C3822 100%);
+            border: 3px solid #3E2414;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.28), 0 5px 12px rgba(0,0,0,0.45);
+            color: #FFF8E7;
+        }
+        .wood-sign-3d {
+            background: linear-gradient(180deg, #9C6334 0%, #6E421F 55%, #4E2C12 100%);
+            border: 2.5px solid #361C09;
+            box-shadow: inset 0 2px 1px rgba(255,230,180,0.45), 0 6px 12px rgba(0,0,0,0.55);
+            color: #FFFBEB;
+        }
+        .star-pill-3d {
+            background: linear-gradient(180deg, #432818 0%, #26150B 100%);
+            border: 2px solid #B08968;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.75), 0 4px 8px rgba(0,0,0,0.45);
+        }
+        .parchment-panel {
+            background: linear-gradient(180deg, #FFFDF5 0%, #FDECC8 100%);
+            border: 4px solid #8D5B3C;
+            box-shadow: inset 0 0 18px rgba(180, 120, 60, 0.16), 0 8px 20px rgba(0,0,0,0.38);
+            color: #2D1B0E;
+        }
+        .btn-3d-orange {
+            background: linear-gradient(180deg, #FF9F1C 0%, #F77F00 100%);
+            border: 3px solid #FFF3B0;
+            box-shadow: 0 5px 0 #B54800, 0 8px 15px rgba(0,0,0,0.4);
+            transition: all 0.12s ease;
+        }
+        .btn-3d-orange:hover { filter: brightness(1.06); transform: translateY(-1px); }
+        .btn-3d-orange:active { transform: translateY(4px); box-shadow: 0 1px 0 #B54800, 0 3px 6px rgba(0,0,0,0.35); }
+
+        .btn-3d-blue {
+            background: linear-gradient(180deg, #38BDF8 0%, #0284C7 100%);
+            border: 3px solid #E0F2FE;
+            box-shadow: 0 5px 0 #0369A1, 0 8px 15px rgba(0,0,0,0.35);
+            transition: all 0.12s ease;
+        }
+        .btn-3d-blue:active { transform: translateY(4px); box-shadow: 0 1px 0 #0369A1; }
+
+        .btn-3d-green {
+            background: linear-gradient(180deg, #4ADE80 0%, #16A34A 100%);
+            border: 3px solid #DCFCE7;
+            box-shadow: 0 5px 0 #15803D, 0 8px 15px rgba(0,0,0,0.35);
+            transition: all 0.12s ease;
+        }
+        .btn-3d-green:active { transform: translateY(4px); box-shadow: 0 1px 0 #15803D; }
+
+        .prop-visual-box {
+            width: 72px;
+            height: 72px;
+            min-width: 72px;
+            min-height: 72px;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border-radius: 18px;
+            background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fef3c7 65%, #fde68a 100%);
+            border: 2.5px solid #d97706;
+            box-shadow: inset 0 3px 6px rgba(255,255,255,0.95), inset 0 -3px 6px rgba(180,83,9,0.25), 0 6px 12px rgba(0,0,0,0.22);
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        .prop-visual-box svg,
+        .prop-visual-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.28));
+        }
+        .avatar-3d-medallion {
+            background: radial-gradient(circle at 30% 25%, #fffbeb 0%, #fde68a 45%, #d97706 100%);
+            border: 3px solid #fef08a;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.8);
+        }
+        .island-gate-token {
+            background: radial-gradient(circle at 35% 25%, rgba(255,255,255,0.35) 0%, rgba(15,23,42,0.85) 100%);
+            border: 3.5px solid #fde047;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.65), 0 0 18px rgba(250,204,21,0.45), inset 0 2px 5px rgba(255,255,255,0.6);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float { animation: floatSlow 3.4s ease-in-out infinite; }
+
+        @keyframes vibrateString {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px) scaleY(1.03); }
+            75% { transform: translateX(3px) scaleY(0.97); }
+        }
+        .vibrate-active { animation: vibrateString 0.1s infinite; }
+
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #8D5B3C; border-radius: 9999px; }
+    </style>
+</head>
+<body class="w-screen h-screen flex items-center justify-center p-1 sm:p-2">
+
+    <!-- MAIN 16:9 GAME VIEWPORT -->
+    <div id="game-viewport" class="relative w-full max-w-[1366px] aspect-video max-h-[97vh] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_70px_rgba(0,0,0,0.85)] border-4 border-amber-700/80 bg-slate-900 flex flex-col justify-between">
+
+        <!-- DYNAMIC 3D VOLUMETRIC ENVIRONMENT LAYER -->
+        <div id="scene-bg" class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            <canvas id="env-3d-canvas" width="1280" height="720" class="w-full h-full object-cover"></canvas>
+            <img id="env-ai-img" alt="" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 pointer-events-none" />
+        </div>
+
+        <!-- TOP HUD BAR (Hidden on Slide 1, shown on Slide 2-21) -->
+        <header id="top-hud" class="hidden relative z-20 flex items-center justify-between px-3 sm:px-5 pt-2.5 pb-1.5 pointer-events-auto">
+            <div class="flex items-center gap-2">
+                <button onclick="goToSlide(1)" title="Halaman Awal" class="btn-3d-orange w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-base shrink-0">
+                    🏠
+                </button>
+                <div class="wood-panel px-2.5 py-1 rounded-xl flex items-center gap-1.5 shrink-0">
+                    <span class="text-amber-300 text-sm">🏮</span>
+                    <span class="font-game font-bold text-xs sm:text-sm tracking-wider text-amber-200">LENTERA</span>
+                </div>
+                <!-- AVATAR SETENGAH BADAN DALAM FRAME LINGKARAN + NAMA PENGGUNA DI SEBELAHNYA -->
+                <div id="hud-player-pill" class="wood-panel pl-1 pr-3 py-0.5 rounded-full flex items-center gap-2 border-2 border-amber-300 shadow-md shrink-0">
+                    <div id="hud-player-avatar" class="w-8 h-8 rounded-full overflow-hidden border-2 border-amber-200 bg-sky-100 flex items-center justify-center shrink-0"></div>
+                    <span id="hud-player-name" class="font-game font-bold text-xs sm:text-sm text-amber-100 max-w-[130px] truncate">Penjelajah Bunyi</span>
+                </div>
+                <div id="stage-header-badge" class="hidden items-center gap-1.5">
+                    <span id="stage-number-circle" class="w-7 h-7 rounded-full flex items-center justify-center font-game font-bold text-white text-xs border-2 border-white shadow-md">1</span>
+                    <div id="stage-title-wood" class="wood-panel px-2.5 py-1 rounded-xl font-game font-bold text-[11px] sm:text-xs tracking-wide">
+                        STAGE 1 • SOUND GATE
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <div id="stage-theme-wood" class="hidden xl:block wood-panel px-3 py-1 rounded-xl font-game text-xs text-amber-100">
+                    Dunia Bunyi Menantimu!
+                </div>
+                <button onclick="openInfoModal('petunjuk')" title="Petunjuk Penggunaan, Tujuan Pembelajaran & Info Pengembang" class="btn-3d-green px-3 py-1.5 rounded-xl text-white font-game text-xs sm:text-sm flex items-center gap-1.5">
+                    <span>📖</span> <span class="hidden md:inline">Info & Panduan</span>
+                </button>
+                <button onclick="openSettingsAuthModal()" title="Pengaturan Guru (Khusus Guru)" class="btn-3d-blue px-3 py-1.5 rounded-xl text-white font-game text-xs sm:text-sm flex items-center gap-1.5">
+                    <span>⚙️</span> <span class="hidden sm:inline">Pengaturan</span>
+                </button>
+                <button onclick="toggleMute()" id="btn-sound-toggle" title="Suara On/Off" class="btn-3d-orange w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm">
+                    🔊
+                </button>
+            </div>
+        </header>
+
+        <!-- ACTIVITY PARCHMENT SUBHEADER (Slide 3-21) -->
+        <div id="activity-banner-wrap" class="hidden relative z-20 px-6 flex justify-center pointer-events-none">
+            <div id="activity-banner" class="parchment-panel px-5 py-1 rounded-full font-game font-bold text-xs sm:text-sm text-amber-950 shadow-md">
+                Misi Pembuka: Video AI Guru
+            </div>
+        </div>
+
+        <!-- MAIN INTERACTIVE SLIDE CONTAINER -->
+        <main id="slide-container" class="relative z-10 flex-1 w-full px-3 sm:px-6 py-1.5 flex items-center justify-center overflow-y-auto custom-scroll">
+        </main>
+
+        <!-- BOTTOM NAVIGATION BAR (Slide 3-21) -->
+        <footer id="bottom-nav" class="hidden relative z-20 px-4 sm:px-6 pb-2.5 pt-1 flex items-center justify-between pointer-events-auto">
+            <button id="btn-prev" onclick="handlePrevSlide()" class="btn-3d-orange px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs sm:text-sm flex items-center gap-1.5">
+                <span>◀</span> <span>Kembali</span>
+            </button>
+
+            <div class="wood-panel px-3.5 py-1 rounded-full flex items-center gap-2.5">
+                <div id="progress-dots" class="flex items-center gap-1.5"></div>
+                <span id="progress-fraction" class="font-game font-bold text-xs text-amber-300">1/3</span>
+                <span class="text-[10px] text-amber-200/75 hidden sm:inline" id="slide-counter-badge">Slide 3/21</span>
+            </div>
+
+            <button id="btn-next" onclick="handleNextSlide()" class="btn-3d-orange px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs sm:text-sm flex items-center gap-1.5">
+                <span id="btn-next-label">Lanjut</span> <span>▶</span>
+            </button>
+        </footer>
+
+        <!-- TOAST FEEDBACK MESSAGE BOX -->
+        <div id="toast-box" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 parchment-panel px-5 py-2.5 rounded-2xl shadow-2xl border-4 border-amber-600 flex items-center gap-2.5 max-w-md">
+            <span id="toast-icon" class="text-xl">✨</span>
+            <p id="toast-text" class="text-xs sm:text-sm font-bold text-amber-950"></p>
+        </div>
+
+        <!-- MODAL 1: PETUNJUK PENGGUNAAN, TUJUAN PEMBELAJARAN & INFO PENGEMBANG -->
+        <div id="info-modal" class="hidden absolute inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+            <div class="parchment-panel w-full max-w-4xl rounded-3xl p-4 sm:p-5 space-y-3 max-h-[92vh] overflow-y-auto custom-scroll border-4 border-amber-700">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-amber-800/20 pb-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🏮</span>
+                        <div>
+                            <h3 class="font-game font-bold text-base sm:text-lg text-amber-950">INFORMASI & PANDUAN MPI LENTERA</h3>
+                            <p class="text-[11px] font-semibold text-amber-800">Lintas Eksplorasi, Narasi, Tematik, Edukasi, Ritme, dan Alam</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="switchInfoTab('petunjuk')" id="tab-btn-petunjuk" class="px-3 py-1.5 rounded-xl font-game font-bold text-xs bg-amber-600 text-white shadow">🎮 Petunjuk Penggunaan</button>
+                        <button onclick="switchInfoTab('tujuan')" id="tab-btn-tujuan" class="px-3 py-1.5 rounded-xl font-game font-bold text-xs bg-amber-100 text-amber-900 border border-amber-400">🎯 Tujuan Pembelajaran</button>
+                        <button onclick="switchInfoTab('pengembang')" id="tab-btn-pengembang" class="px-3 py-1.5 rounded-xl font-game font-bold text-xs bg-amber-100 text-amber-900 border border-amber-400">👨‍🏫 Tim Pengembang</button>
+                        <button onclick="closeInfoModal()" class="w-8 h-8 rounded-full bg-red-600 text-white font-bold text-sm">✕</button>
+                    </div>
+                </div>
+
+                <!-- TAB 1: PETUNJUK PENGGUNAAN -->
+                <div id="info-tab-petunjuk" class="space-y-3 text-xs text-amber-950">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 space-y-1.5">
+                            <div class="font-game font-bold text-sm text-amber-900">1. Memulai Ekspedisi & Pilih Karakter</div>
+                            <p class="leading-relaxed">Ketik <b>Nama Pemain</b> pada Halaman Awal (Slide 1), pilih karakter <b>Laki-laki</b> atau <b>Perempuan</b>, lalu klik tombol <b>Mulai Petualangan</b>. Karakter pilihanmu akan tampil dalam bingkai lingkaran di bilah atas.</p>
+                        </div>
+                        <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 space-y-1.5">
+                            <div class="font-game font-bold text-sm text-amber-900">2. Peta 5 Pulau & Pengumpulan Bintang</div>
+                            <p class="leading-relaxed">Di <b>Peta Petualangan (Slide 2)</b>, klik logo lingkaran pulau untuk memulai Stage 1 hingga Stage 5. Selesaikan setiap misi di dalam stage untuk mengumpulkan <b>Bintang Progres (★)</b>.</p>
+                        </div>
+                        <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 space-y-1.5">
+                            <div class="font-game font-bold text-sm text-amber-900">3. Eksperimen & Audio Interaktif</div>
+                            <p class="leading-relaxed">Klik tombol <b>🔊 Putar</b> pada kartu instrumen/objek untuk mendengarkan bunyi nyata, uji kondisi tali <b>Tegang vs Kendur</b> di Sonic Lab, dan mainkan 5 botol <b>Xylophone Air</b>.</p>
+                        </div>
+                        <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-3 space-y-1.5">
+                            <div class="font-game font-bold text-sm text-amber-900">4. Navigasi & Sertifikat Kelulusan</div>
+                            <p class="leading-relaxed">Gunakan tombol <b>◀ Kembali</b> dan <b>Lanjut ▶</b> di bagian bawah layar. Setelah menyelesaikan refleksi di Stage 5, kamu akan menerima <b>Sertifikat Penjelajah Bunyi</b> di Slide 21.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: TUJUAN PEMBELAJARAN -->
+                <div id="info-tab-tujuan" class="hidden space-y-3 text-xs text-amber-950">
+                    <div class="bg-sky-50 border-2 border-sky-400 rounded-2xl p-3.5 space-y-1">
+                        <div class="font-game font-bold text-sm text-sky-900">🔬 1. Mata Pelajaran Utama: IPAS (Sains Bunyi)</div>
+                        <p class="leading-relaxed">Peserta didik mampu membuktikan bahwa bunyi dihasilkan oleh benda yang <b>bergetar</b>, mengidentifikasi sifat rambat bunyi melalui medium <b>padat, cair, dan gas</b>, serta mengklasifikasikan rentang frekuensi bunyi (<b>infrasonik, audiosonik, ultrasonik</b>) melalui penyelidikan berbasis bukti.</p>
+                    </div>
+                    <div class="bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-3.5 space-y-1">
+                        <div class="font-game font-bold text-sm text-emerald-900">📝 2. Integrasi Bahasa Indonesia (Bernarasi & Eksplanasi Ilmiah)</div>
+                        <p class="leading-relaxed">Peserta didik mampu menuliskan prediksi ilmiah, menguraikan langkah percobaan, serta menjelaskan hubungan sebab-akibat fenomena bunyi menggunakan kalimat yang runtut dan logis berdasarkan bukti pengamatan.</p>
+                    </div>
+                    <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-3.5 space-y-1">
+                        <div class="font-game font-bold text-sm text-amber-900">🎵 3. Integrasi Seni Musik (Nada & Instrumen)</div>
+                        <p class="leading-relaxed">Peserta didik mampu membedakan karakteristik bunyi (<b>nada, desah, dentum</b>), mengelompokkan alat musik berdasarkan cara memainkannya, dan merancang instrumen penghasil nada sederhana (Xylophone Air).</p>
+                    <!-- TAB 3: TIM PENGEMBANG (SESUAI REFERENSI GAMBAR) -->
+                <div id="info-tab-pengembang" class="hidden space-y-3 text-xs text-amber-950">
+                    <div class="bg-gradient-to-b from-sky-200 via-sky-100 to-amber-50 border-4 border-amber-500 rounded-3xl p-4 shadow-xl relative overflow-hidden">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="px-4 py-1 rounded-full bg-amber-500 text-white font-game font-bold text-xs shadow">✨ TIM PENGEMBANG MPI LENTERA ✨</span>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="generateDeveloperPortraitAI()" class="px-3 py-1 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-game font-bold text-[11px] shadow">✨ Perbarui 3D Pixar</button>
+                                <label class="cursor-pointer px-3 py-1 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-game font-bold text-[11px] shadow">
+                                    🖼️ Pasang File Gambar Referensi
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleDeveloperRefUpload(this)">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="w-full max-w-2xl mx-auto flex flex-col items-center relative">
+                            <img id="dev-ref-photo" src="Video Pengantar dari Guru.png" onerror="this.classList.add('hidden')" onload="this.classList.remove('hidden'); document.getElementById('dev-3d-canvas-wrap').classList.add('hidden');" class="hidden w-full max-h-[390px] object-contain rounded-2xl drop-shadow-2xl" alt="Tim Pengembang LENTERA">
+                            <div id="dev-3d-canvas-wrap" class="w-full flex justify-center">
+                                <canvas id="dev-medallion-canvas" width="860" height="600" class="w-full max-w-[680px] h-auto max-h-[380px] drop-shadow-2xl"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 2: PASSWORD OTENTIKASI PENGATURAN GURU (PASSWORD: lentera2026) -->
+        <div id="settings-auth-modal" class="hidden absolute inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="parchment-panel w-full max-w-md rounded-3xl p-5 space-y-3 border-4 border-amber-700 text-center">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white text-2xl flex items-center justify-center mx-auto shadow-lg">🔒</div>
+                <h3 class="font-game font-bold text-lg text-amber-950">Akses Pengaturan Khusus Guru</h3>
+                <p class="text-xs font-semibold text-amber-800">Masukkan kata sandi guru untuk membuka panel pengaturan & lompat slide.</p>
+                <input id="teacher-password-input" type="password" onkeydown="if(event.key==='Enter') verifyTeacherPassword()" placeholder="Masukkan password guru..." class="w-full px-4 py-2 rounded-xl border-2 border-amber-600 bg-white font-bold text-sm text-center text-amber-950">
+                <p id="teacher-password-error" class="hidden text-xs font-bold text-red-600">❌ Kata sandi salah! Hanya guru yang memiliki akses.</p>
+                <div class="flex items-center justify-center gap-2 pt-1">
+                    <button onclick="closeSettingsAuthModal()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs">Batal</button>
+                    <button onclick="verifyTeacherPassword()" class="btn-3d-orange px-5 py-2 rounded-xl font-game font-bold text-white text-xs">🔓 Buka Pengaturan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 3: PANEL PENGATURAN GURU -->
+        <div id="teacher-modal" class="hidden absolute inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="parchment-panel w-full max-w-3xl rounded-3xl p-5 space-y-3 max-h-[90vh] overflow-y-auto custom-scroll">
+                <div class="flex items-center justify-between border-b-2 border-amber-800/20 pb-2">
+                    <h3 class="font-game font-bold text-lg text-amber-950">⚙️ Pengaturan Guru & Lompat Slide</h3>
+                    <button onclick="closeTeacherModal()" class="w-8 h-8 rounded-full bg-red-600 text-white font-bold">✕</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <label class="font-bold block mb-1">Tim Pengembang (Sertifikat Slide 21):</label>
+                        <input id="input-dev-name" type="text" value="Teresa Avilla A.B.C., Ferliyan Reza, Eprina Roganda" class="w-full px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white font-semibold">
+                    </div>
+                    <div>
+                        <label class="font-bold block mb-1">Target Kelas (Slide 1 & 21):</label>
+                        <input id="input-class-name" type="text" value="Kelas IV SD (Fase B)" class="w-full px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white font-semibold">
+                    </div>
+                </div>
+                <div class="bg-amber-100/90 border-2 border-amber-500 rounded-xl p-2.5 text-xs flex flex-wrap items-center justify-between gap-2">
+                    <span class="font-bold text-amber-950">⭐ Simulasi Bintang Peta (Slide 2):</span>
+                    <div class="flex gap-2">
+                        <button onclick="fillAllStageStars()" class="px-3 py-1 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold">Isi Penuh Semua Bintang</button>
+                        <button onclick="resetAllStageStars()" class="px-3 py-1 rounded-lg bg-slate-600 hover:bg-slate-700 text-white font-bold">Reset Bintang (0)</button>
+                    </div>
+                </div>
+                <div class="space-y-1 text-xs">
+                    <p class="font-bold text-amber-900">Lompat Cepat ke Slide (1–21):</p>
+                    <div id="quick-slide-jump" class="grid grid-cols-7 gap-1.5 pt-1"></div>
+                </div>
+                <div class="flex justify-end pt-1">
+                    <button onclick="saveTeacherConfig()" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">Simpan Pengaturan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==============================================================
+           GLOBAL APPLICATION STATE & 21-SLIDE METADATA
+        ============================================================== */
+        const state = {
+            currentSlide: 1,
+            playerName: "Penjelajah Bunyi",
+            playerGender: "boy",
+            devName: "Teresa Avilla A.B.C., Ferliyan Reza, Eprina Roganda",
+            className: "Kelas IV SD (Fase B)",
+            soundEnabled: true,
+            teacherUnlocked: false,
+            stageStars: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+            stageMaxStars: { 1: 5, 2: 5, 3: 5, 4: 4, 5: 4 },
+            completedTasks: {},
+            videoIntroPlaying: false,
+            videoIntroProgress: 0,
+            videoIntroStep: 0,
+            videoNativeAvailable: false,
+            customVideoBlobUrl: null,
+            slide4Saved: "",
+            slide5Choice: "Benda bergetar",
+            slide5Reason: "",
+            slide7Anim: false,
+            slide8Bins: {},
+            slide9Tab: 0,
+            slide9AudioIdx: 0,
+            slide9Category: "",
+            slide11String: "Tegang",
+            slide12Medium: "Padat",
+            slide12Matches: {},
+            slide14Option: "",
+            slide16Choice: "",
+            slide17Mode: "Ketuk Botol",
+            slide17Notes: "",
+            slide18Mission: "Misi A: Sonic Maker",
+            slide19Title: "",
+            slide19Desc: "",
+            slide20New: "",
+            slide20Best: "",
+            slide20Self: 4
+        };
+
+        const slideMeta = {
+            1:  { stage: 0, prev: null, next: 2 },
+            2:  { stage: 0, prev: 1,    next: 3 },
+            3:  { stage: 1, stageName: "SOUND GATE",   color: "#2E7D32", theme: "Dunia Bunyi Menantimu!",      activity: "Misi Pembuka: Video AI Guru",                step: [1,3], prev: 2,  next: 4  },
+            4:  { stage: 1, stageName: "SOUND GATE",   color: "#2E7D32", theme: "Dunia Bunyi Menantimu!",      activity: "Suara di Sekitar Kita",                      step: [2,3], prev: 3,  next: 5  },
+            5:  { stage: 1, stageName: "SOUND GATE",   color: "#2E7D32", theme: "Dunia Bunyi Menantimu!",      activity: "Prediksi Ilmuwan Cilik",                     step: [3,3], prev: 4,  next: 2  },
+            6:  { stage: 2, stageName: "SONIC SAFARI", color: "#EF6C00", theme: "Berburu Jejak Bunyi",         activity: "Sound Explorer: Dengarkan dan Bandingkan",   step: [1,4], prev: 2,  next: 7  },
+            7:  { stage: 2, stageName: "SONIC SAFARI", color: "#EF6C00", theme: "Berburu Jejak Bunyi",         activity: "Sound Knowledge: Apa Itu Bunyi?",            step: [2,4], prev: 6,  next: 8  },
+            8:  { stage: 2, stageName: "SONIC SAFARI", color: "#EF6C00", theme: "Berburu Jejak Bunyi",         activity: "Frequency Ranger: Dunia Frekuensi",          step: [3,4], prev: 7,  next: 9  },
+            9:  { stage: 2, stageName: "SONIC SAFARI", color: "#EF6C00", theme: "Berburu Jejak Bunyi",         activity: "Sound Detective: Nada, Desah, dan Dentum",   step: [4,4], prev: 8,  next: 2  },
+            10: { stage: 3, stageName: "SONIC LAB",    color: "#0277BD", theme: "Laboratorium Rahasia Bunyi",  activity: "Lab Briefing: Misi Dimulai",                 step: [1,4], prev: 2,  next: 11 },
+            11: { stage: 3, stageName: "SONIC LAB",    color: "#0277BD", theme: "Laboratorium Rahasia Bunyi",  activity: "CUP CALL: Telepon Gelas Misterius",          step: [2,4], prev: 10, next: 12 },
+            12: { stage: 3, stageName: "SONIC LAB",    color: "#0277BD", theme: "Laboratorium Rahasia Bunyi",  activity: "MEDIUM MASTERS: Jalur Rahasia Bunyi",        step: [3,4], prev: 11, next: 13 },
+            13: { stage: 3, stageName: "SONIC LAB",    color: "#0277BD", theme: "Laboratorium Rahasia Bunyi",  activity: "INSTRUMENT HUNTER: Berburu Alat Musik",      step: [4,4], prev: 12, next: 2  },
+            14: { stage: 4, stageName: "SONIC ARENA",  color: "#6A1B9A", theme: "Duel Para Detektif",          activity: "SOUND CHALLENGE: Kuis Pilihan Ganda",        step: [1,4], prev: 2,  next: 15 },
+            15: { stage: 4, stageName: "SONIC ARENA",  color: "#6A1B9A", theme: "Duel Para Detektif",          activity: "MATCH & MATCH: Pasangkan Konsep",            step: [2,4], prev: 14, next: 16 },
+            16: { stage: 4, stageName: "SONIC ARENA",  color: "#6A1B9A", theme: "Duel Para Detektif",          activity: "GUESS THE SOUND: Tebak Suara",               step: [3,4], prev: 15, next: 17 },
+            17: { stage: 4, stageName: "SONIC ARENA",  color: "#6A1B9A", theme: "Duel Para Detektif",          activity: "FINAL BOSS: Misi Terakhir Penjelajah Bunyi", step: [4,4], prev: 16, next: 2  },
+            18: { stage: 5, stageName: "SONIC EXPO",   color: "#C62828", theme: "Panggung Kreasi Ilmuwan",     activity: "CHOOSE YOUR CREATION: Pilih Misi Karyamu",   step: [1,4], prev: 2,  next: 19 },
+            19: { stage: 5, stageName: "SONIC EXPO",   color: "#C62828", theme: "Panggung Kreasi Ilmuwan",     activity: "UPLOAD YOUR CREATION: Galeri Karya",         step: [2,4], prev: 18, next: 20 },
+            20: { stage: 5, stageName: "SONIC EXPO",   color: "#C62828", theme: "Panggung Kreasi Ilmuwan",     activity: "REFLECT & GROW: Refleksi Penjelajah",        step: [3,4], prev: 19, next: 21 },
+            21: { stage: 5, stageName: "SONIC EXPO",   color: "#C62828", theme: "Panggung Kreasi Ilmuwan",     activity: "MISSION COMPLETE: Sertifikat Penjelajah",    step: [4,4], prev: 20, next: 2  }
+        };
+
+        function awardTaskStar(stageNum, taskKey, starsToAdd = 1) {
+            if (state.completedTasks[taskKey]) return;
+            state.completedTasks[taskKey] = true;
+            const maxS = state.stageMaxStars[stageNum] || 5;
+            state.stageStars[stageNum] = Math.min(maxS, (state.stageStars[stageNum] || 0) + starsToAdd);
+        }
+
+        /* ==============================================================
+           PROP VISUAL ITEMS (1:1 PROPORTIONAL VISUAL ASSETS + REAL PNG AUTO-LOAD)
+        ============================================================== */
+        const ITEM_FILE_MAP = {
+            'bel': 'Bel Sekolah.png',
+            'burung': 'Burung.png',
+            'kendaraan': 'Kendaraan.png',
+            'gitar': 'Gitar.png',
+            'senar_gitar': 'Senar Gitar.png',
+            'membran_drum': 'Membran Drum.png',
+            'hujan': 'Hujan.png',
+            'tepuk_tangan': 'Tepuk Tangan.png',
+            'gajah': 'Gajah.png',
+            'paus': 'Paus.png'
+        };
+
+        const aiItemCache = {};
+
+        function getBuiltin3DItemSVG(itemKey) {
+            const svgs = {
+                'bel': `<svg viewBox="0 0 120 120"><defs><radialGradient id="bellGold3D" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFFBEB"/><stop offset="35%" stop-color="#FDE047"/><stop offset="70%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></radialGradient><linearGradient id="bellWood3D" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#9A3412"/><stop offset="45%" stop-color="#EA580C"/><stop offset="100%" stop-color="#431407"/></linearGradient></defs><path d="M51 8 C46 8, 44 28, 50 45 L70 45 C76 28, 74 8, 69 8 Z" fill="url(#bellWood3D)"/><ellipse cx="56" cy="24" rx="2.5" ry="12" fill="rgba(255,255,255,0.45)"/><rect x="48" y="42" width="24" height="8" rx="4" fill="url(#bellGold3D)" stroke="#78350F" stroke-width="1.5"/><path d="M39 49 C36 74, 22 89, 16 97 L104 97 C98 89, 84 74, 81 49 Z" fill="url(#bellGold3D)" stroke="#78350F" stroke-width="2"/><path d="M46 54 C44 72, 36 84, 30 92" stroke="rgba(255,255,255,0.75)" stroke-width="5" stroke-linecap="round" fill="none"/><ellipse cx="60" cy="97" rx="44" ry="8" fill="#B45309" stroke="#78350F" stroke-width="2"/><circle cx="60" cy="105" r="10" fill="url(#bellGold3D)" stroke="#78350F" stroke-width="2"/></svg>`,
+                'burung': `<svg viewBox="0 0 120 120"><defs><radialGradient id="birdBody" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#FEF9C3"/><stop offset="55%" stop-color="#FACC15"/><stop offset="100%" stop-color="#CA8A04"/></radialGradient><radialGradient id="birdHead" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#60A5FA"/><stop offset="65%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1E3A8A"/></radialGradient></defs><path d="M10 104 Q58 92 110 105" stroke="#78350F" stroke-width="9" stroke-linecap="round" fill="none"/><ellipse cx="56" cy="68" rx="25" ry="23" fill="url(#birdBody)"/><circle cx="58" cy="43" r="18" fill="url(#birdHead)"/><ellipse cx="62" cy="48" rx="11" ry="9" fill="#FFFBEB"/><path d="M34 60 C26 38, 56 28, 70 48 C62 66, 44 70, 34 60 Z" fill="url(#birdHead)"/><polygon points="73,38 94,31 77,48" fill="#FB923C"/><polygon points="75,46 91,53 73,54" fill="#EA580C"/><circle cx="60" cy="41" r="4" fill="#0F172A"/><circle cx="58.5" cy="39.5" r="1.5" fill="#FFFFFF"/><text x="92" y="32" fill="#F59E0B" font-size="22" font-weight="bold">♪</text><text x="98" y="56" fill="#EC4899" font-size="19" font-weight="bold">♫</text></svg>`,
+                'kendaraan': `<svg viewBox="0 0 120 120"><defs><linearGradient id="scooterRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FCA5A5"/><stop offset="40%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient></defs><circle cx="32" cy="88" r="18" fill="#1E293B" stroke="#0F172A" stroke-width="4"/><circle cx="32" cy="88" r="9" fill="#CBD5E1"/><circle cx="88" cy="88" r="16" fill="#1E293B" stroke="#0F172A" stroke-width="4"/><circle cx="88" cy="88" r="7" fill="#CBD5E1"/><path d="M26 72 L45 40 L68 40 L58 76 L94 76 L100 54 L68 54" fill="url(#scooterRed)" stroke="#7F1D1D" stroke-width="2"/><path d="M36 44 L56 44 L48 68 L28 68 Z" fill="#F8FAFC" stroke="#94A3B8" stroke-width="1.5"/><rect x="64" y="46" width="34" height="11" rx="5.5" fill="#0F172A"/><line x1="34" y1="25" x2="64" y2="25" stroke="#0F172A" stroke-width="5.5" stroke-linecap="round"/><ellipse cx="42" cy="52" rx="7" ry="4.5" fill="#FEF08A"/></svg>`,
+                'gitar': `<svg viewBox="0 0 120 120"><defs><radialGradient id="guitarBody" cx="38%" cy="35%" r="68%"><stop offset="0%" stop-color="#FDE68A"/><stop offset="55%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></radialGradient></defs><rect x="55" y="7" width="10" height="48" fill="#451A03"/><rect x="52" y="3" width="16" height="13" rx="3" fill="#271206"/><path d="M43 51 C30 51, 32 68, 41 74 C26 82, 26 112, 60 112 C94 112, 94 82, 79 74 C88 68, 90 51, 77 51 Z" fill="url(#guitarBody)" stroke="#451A03" stroke-width="2.5"/><circle cx="60" cy="76" r="12" fill="#1C1917" stroke="#FEF08A" stroke-width="2"/><rect x="49" y="95" width="22" height="5.5" rx="2" fill="#271206"/><line x1="58" y1="10" x2="58" y2="96" stroke="#FEF9C3" stroke-width="1.3"/><line x1="62" y1="10" x2="62" y2="96" stroke="#E2E8F0" stroke-width="1.3"/></svg>`,
+                'senar_gitar': `<svg viewBox="0 0 120 120"><circle cx="45" cy="66" r="33" fill="none" stroke="#B45309" stroke-width="6"/><circle cx="51" cy="66" r="33" fill="none" stroke="#F59E0B" stroke-width="4.5"/><circle cx="69" cy="66" r="33" fill="none" stroke="#64748B" stroke-width="5"/><circle cx="75" cy="66" r="33" fill="none" stroke="#CBD5E1" stroke-width="4"/><circle cx="38" cy="20" r="6" fill="none" stroke="#D97706" stroke-width="3.5"/><circle cx="53" cy="20" r="6" fill="none" stroke="#D97706" stroke-width="3.5"/><circle cx="68" cy="20" r="6" fill="none" stroke="#D97706" stroke-width="3.5"/><circle cx="83" cy="20" r="6" fill="none" stroke="#D97706" stroke-width="3.5"/></svg>`,
+                'membran_drum': `<svg viewBox="0 0 120 120"><defs><radialGradient id="drumHead" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="75%" stop-color="#E2E8F0"/><stop offset="100%" stop-color="#94A3B8"/></radialGradient></defs><circle cx="60" cy="60" r="48" fill="#64748B" stroke="#1E293B" stroke-width="3.5"/><circle cx="60" cy="60" r="41" fill="url(#drumHead)" stroke="#CBD5E1" stroke-width="2"/><circle cx="60" cy="9" r="4.5" fill="#1E293B"/><circle cx="60" cy="111" r="4.5" fill="#1E293B"/><circle cx="9" cy="60" r="4.5" fill="#1E293B"/><circle cx="111" cy="60" r="4.5" fill="#1E293B"/></svg>`,
+                'telepon_kaleng': `<svg viewBox="0 0 120 120"><defs><linearGradient id="cupBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7DD3FC"/><stop offset="100%" stop-color="#0369A1"/></linearGradient><linearGradient id="cupRed" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FDA4AF"/><stop offset="100%" stop-color="#BE123C"/></linearGradient></defs><rect x="10" y="40" width="28" height="40" rx="6" fill="url(#cupBlue)" stroke="#0C4A6E" stroke-width="2"/><rect x="82" y="40" width="28" height="40" rx="6" fill="url(#cupRed)" stroke="#881337" stroke-width="2"/><line x1="38" y1="60" x2="82" y2="60" stroke="#F59E0B" stroke-width="4" stroke-dasharray="5,3"/></svg>`,
+                'botol_air': `<svg viewBox="0 0 120 120"><rect x="18" y="30" width="22" height="66" rx="6" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/><rect x="20" y="66" width="18" height="28" rx="4" fill="#EF4444"/><rect x="49" y="30" width="22" height="66" rx="6" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/><rect x="51" y="50" width="18" height="44" rx="4" fill="#F59E0B"/><rect x="80" y="30" width="22" height="66" rx="6" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/><rect x="82" y="38" width="18" height="56" rx="4" fill="#10B981"/></svg>`,
+                'hujan': `<svg viewBox="0 0 120 120"><defs><radialGradient id="cloud3D" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#94A3B8"/><stop offset="60%" stop-color="#475569"/><stop offset="100%" stop-color="#1E293B"/></radialGradient></defs><path d="M26 52 C14 52, 12 35, 25 31 C29 16, 52 14, 60 25 C70 15, 93 19, 95 33 C107 35, 105 52, 91 52 Z" fill="url(#cloud3D)"/><g stroke="#38BDF8" stroke-width="3.5" stroke-linecap="round"><line x1="34" y1="58" x2="25" y2="89"/><line x1="50" y1="58" x2="41" y2="91"/><line x1="66" y1="58" x2="57" y2="89"/><line x1="82" y1="58" x2="73" y2="91"/></g><ellipse cx="56" cy="99" rx="40" ry="7" fill="#0284C7" opacity="0.65"/></svg>`,
+                'tepuk_tangan': `<svg viewBox="0 0 120 120"><defs><radialGradient id="handSkin" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#FFEDD5"/><stop offset="60%" stop-color="#FDBA74"/><stop offset="100%" stop-color="#C2410C"/></radialGradient></defs><path d="M36 78 L58 34 C62 28, 71 32, 67 41 L53 68 L75 39 C79 33, 87 37, 83 46 L65 74 L85 51 C89 45, 95 51, 91 58 L68 91 C56 99, 40 93, 36 78 Z" fill="url(#handSkin)" stroke="#9A3412" stroke-width="2"/><path d="M23 94 L42 109 L58 92 L36 78 Z" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2"/><g stroke="#FACC15" stroke-width="5.5" stroke-linecap="round"><line x1="25" y1="26" x2="38" y2="37"/><line x1="16" y1="44" x2="33" y2="48"/><line x1="94" y1="26" x2="82" y2="37"/></g></svg>`,
+                'gajah': `<svg viewBox="0 0 120 120"><defs><radialGradient id="eleSkin" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#D6D3D1"/><stop offset="55%" stop-color="#78716C"/><stop offset="100%" stop-color="#44403C"/></radialGradient></defs><ellipse cx="28" cy="48" rx="21" ry="27" fill="url(#eleSkin)" stroke="#44403C" stroke-width="2"/><ellipse cx="88" cy="48" rx="21" ry="27" fill="url(#eleSkin)" stroke="#44403C" stroke-width="2"/><ellipse cx="58" cy="69" rx="27" ry="23" fill="url(#eleSkin)"/><rect x="37" y="78" width="13" height="29" rx="6" fill="url(#eleSkin)"/><rect x="66" y="78" width="13" height="29" rx="6" fill="url(#eleSkin)"/><circle cx="58" cy="44" r="19" fill="url(#eleSkin)"/><path d="M56 48 Q64 56 83 35 Q95 21 99 13" stroke="url(#eleSkin)" stroke-width="11" stroke-linecap="round" fill="none"/><path d="M51 56 Q47 71 61 73" stroke="#FEF9C3" stroke-width="5.5" stroke-linecap="round" fill="none"/><circle cx="50" cy="40" r="3.5" fill="#1C1917"/></svg>`,
+                'paus': `<svg viewBox="0 0 120 120"><defs><linearGradient id="whaleBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#334155"/><stop offset="60%" stop-color="#0F172A"/><stop offset="100%" stop-color="#CBD5E1"/></linearGradient></defs><path d="M8 56 C10 32, 48 30, 75 43 C93 51, 103 43, 112 26 C114 41, 107 56, 97 60 C72 73, 34 79, 10 62 Z" fill="url(#whaleBody)"/><path d="M13 60 C34 75, 67 73, 87 60 C65 65, 34 65, 13 60 Z" fill="#F8FAFC"/><path d="M46 58 C41 79, 48 94, 59 98 C59 83, 57 68, 52 58 Z" fill="#E2E8F0" stroke="#1E293B" stroke-width="1.5"/><circle cx="34" cy="51" r="3" fill="#FFFFFF"/></svg>`,
+                'piano': `<svg viewBox="0 0 120 120"><rect x="12" y="26" width="96" height="68" rx="9" fill="#0F172A" stroke="#334155" stroke-width="3"/><rect x="19" y="35" width="19" height="52" rx="2.5" fill="#FFFFFF"/><rect x="40" y="35" width="19" height="52" rx="2.5" fill="#FFFFFF"/><rect x="61" y="35" width="19" height="52" rx="2.5" fill="#FFFFFF"/><rect x="82" y="35" width="19" height="52" rx="2.5" fill="#FFFFFF"/><rect x="33" y="35" width="11" height="32" rx="2" fill="#0F172A"/><rect x="54" y="35" width="11" height="32" rx="2" fill="#0F172A"/><rect x="75" y="35" width="11" height="32" rx="2" fill="#0F172A"/></svg>`,
+                'nyamuk': `<svg viewBox="0 0 120 120"><ellipse cx="43" cy="39" rx="19" ry="9.5" transform="rotate(-25 43 39)" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.5"/><ellipse cx="75" cy="39" rx="19" ry="9.5" transform="rotate(25 75 39)" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.5"/><ellipse cx="60" cy="63" rx="9.5" ry="21" fill="#334155"/><circle cx="60" cy="38" r="8.5" fill="#0F172A"/><line x1="60" y1="30" x2="60" y2="11" stroke="#0F172A" stroke-width="3.5"/></svg>`,
+                'anjing': `<svg viewBox="0 0 120 120"><defs><radialGradient id="dogFur" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#FDE68A"/><stop offset="55%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></radialGradient></defs><ellipse cx="31" cy="52" rx="13" ry="23" transform="rotate(15 31 52)" fill="#78350F"/><ellipse cx="89" cy="52" rx="13" ry="23" transform="rotate(-15 89 52)" fill="#78350F"/><circle cx="60" cy="58" r="29" fill="url(#dogFur)"/><ellipse cx="60" cy="69" rx="17" ry="13" fill="#FFFBEB"/><ellipse cx="60" cy="63" rx="7.5" ry="5.5" fill="#0F172A"/><circle cx="48" cy="50" r="5" fill="#0F172A"/><circle cx="46.5" cy="48.5" r="1.8" fill="#FFFFFF"/><circle cx="72" cy="50" r="5" fill="#0F172A"/><circle cx="70.5" cy="48.5" r="1.8" fill="#FFFFFF"/></svg>`,
+                'kelelawar': `<svg viewBox="0 0 120 120"><path d="M8 56 Q28 30 46 52 L60 43 L74 52 Q92 30 112 56 Q92 65 82 78 Q68 69 60 82 Q52 69 38 78 Q28 65 8 56 Z" fill="#312E81" stroke="#1E1B4B" stroke-width="2.5"/><polygon points="48,44 52,22 58,42" fill="#312E81"/><polygon points="72,44 68,22 62,42" fill="#312E81"/><circle cx="55" cy="50" r="3.5" fill="#FACC15"/><circle cx="65" cy="50" r="3.5" fill="#FACC15"/></svg>`
+            };
+            return svgs[itemKey] || svgs['bel'];
+        }
+
+        function renderItemVisualBox(itemKey, label = '') {
+            const fileName = ITEM_FILE_MAP[itemKey];
+            const cachedAi = aiItemCache[itemKey];
+            if (!cachedAi) {
+                requestSilentNanoBananaItem(itemKey);
+            }
+            return `
+            <div class="prop-visual-box" data-item-key="${itemKey}">
+                ${cachedAi ? `<img src="${cachedAi}" alt="${label}" class="w-full h-full object-contain z-10">` : fileName ? `<img src="${fileName}" alt="${label}" onerror="this.remove()" class="w-full h-full object-contain z-10">` : ''}
+                <div class="w-full h-full flex items-center justify-center">${getBuiltin3DItemSVG(itemKey)}</div>
+            </div>`;
+        }
+
+        /* ==============================================================
+           VOLUMETRIC 3D CANVAS ENVIRONMENT ENGINE + NANO-BANANA 3D
+        ============================================================== */
+        const aiSlideBgCache = {};
+        const aiSlideInFlight = {};
+        const aiCharCache = {};
+        const aiCharInFlight = {};
+        const aiItemInFlight = {};
+
+        function renderEnvironmentBackground(slideNum) {
+            draw3DEnvironmentCanvas(slideNum);
+            const aiImg = document.getElementById('env-ai-img');
+            if (aiImg) {
+                if (aiSlideBgCache[slideNum]) {
+                    aiImg.src = aiSlideBgCache[slideNum];
+                    aiImg.classList.remove('opacity-0');
+                } else {
+                    aiImg.classList.add('opacity-0');
+                    requestSilentNanoBananaSlide(slideNum);
+                }
+            }
+            // Preload slide berikutnya secara senyap agar saat berpindah slide sudah 3D Pixar
+            const nextSlide = slideMeta[slideNum]?.next;
+            if (nextSlide && !aiSlideBgCache[nextSlide]) {
+                setTimeout(() => requestSilentNanoBananaSlide(nextSlide), 400);
+            }
+        }
+
+        function draw3DEnvironmentCanvas(slideNum) {
+            const canvas = document.getElementById('env-3d-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            if (slideNum === 2) {
+                // PETA KEPULAUAN TROPIS 3D SINEMATIK (SESUAI REFERENSI PETA PETUALANGAN)
+                const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.38);
+                skyGrad.addColorStop(0, '#0284C7');
+                skyGrad.addColorStop(0.6, '#38BDF8');
+                skyGrad.addColorStop(1, '#BAE6FD');
+                ctx.fillStyle = skyGrad;
+                ctx.fillRect(0, 0, W, H * 0.38);
+
+                // Awan Volumetrik 3D
+                const drawCloud3D = (cx, cy, s) => {
+                    const cg = ctx.createRadialGradient(cx, cy - 10 * s, 5, cx, cy, 75 * s);
+                    cg.addColorStop(0, 'rgba(255,255,255,0.98)');
+                    cg.addColorStop(0.7, 'rgba(224,242,254,0.82)');
+                    cg.addColorStop(1, 'rgba(186,230,253,0)');
+                    ctx.fillStyle = cg;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 62 * s, 0, Math.PI * 2);
+                    ctx.arc(cx + 46 * s, cy + 8 * s, 48 * s, 0, Math.PI * 2);
+                    ctx.arc(cx - 46 * s, cy + 10 * s, 45 * s, 0, Math.PI * 2);
+                    ctx.fill();
+                };
+                drawCloud3D(160, 88, 1.1);
+                drawCloud3D(610, 62, 0.95);
+                drawCloud3D(1090, 92, 1.15);
+
+                // Pegunungan Vulkanik Tropis di Horizon Kanan Atas
+                const mtnGrad = ctx.createLinearGradient(900, 35, 900, 235);
+                mtnGrad.addColorStop(0, '#475569');
+                mtnGrad.addColorStop(0.45, '#15803D');
+                mtnGrad.addColorStop(1, '#0284C7');
+                ctx.fillStyle = mtnGrad;
+                ctx.beginPath();
+                ctx.moveTo(760, 225); ctx.lineTo(880, 85); ctx.lineTo(955, 145);
+                ctx.lineTo(1045, 36); ctx.lineTo(1145, 130); ctx.lineTo(1210, 78);
+                ctx.lineTo(1280, 225); ctx.closePath();
+                ctx.fill();
+
+                // Lautan Tropis Berlapis (Deep Ocean -> Turquoise Lagoon)
+                const seaGrad = ctx.createLinearGradient(0, H * 0.25, 0, H);
+                seaGrad.addColorStop(0, '#0369A1');
+                seaGrad.addColorStop(0.28, '#0284C7');
+                seaGrad.addColorStop(0.62, '#06B6D4');
+                seaGrad.addColorStop(1, '#0E7490');
+                ctx.fillStyle = seaGrad;
+                ctx.fillRect(0, H * 0.25, W, H * 0.75);
+
+                // Kilau Riak Air Laut Tropis
+                ctx.fillStyle = 'rgba(165, 243, 252, 0.28)';
+                for (let i = 0; i < 36; i++) {
+                    const rx = (i * 173) % W;
+                    const ry = H * 0.30 + ((i * 97) % (H * 0.65));
+                    ctx.beginPath();
+                    ctx.ellipse(rx, ry, 28 + (i % 18), 3, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Jembatan Kayu Gantung Antar Pulau
+                const drawBridge = (x1, y1, x2, y2) => {
+                    ctx.save();
+                    ctx.strokeStyle = '#78350F';
+                    ctx.lineWidth = 11;
+                    ctx.setLineDash([12, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 + 24, x2, y2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#F59E0B';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1 - 8);
+                    ctx.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 + 14, x2, y2 - 8);
+                    ctx.stroke();
+                    ctx.restore();
+                };
+                drawBridge(355, 345, 520, 275);
+                drawBridge(760, 275, 925, 345);
+                drawBridge(540, 565, 745, 565);
+
+                // Jalur Ekspedisi Putus-putus Bercahaya
+                ctx.save();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.lineWidth = 4.5;
+                ctx.setLineDash([8, 8]);
+                ctx.beginPath();
+                ctx.moveTo(270, 390); ctx.quadraticCurveTo(340, 495, 425, 555);
+                ctx.moveTo(1010, 390); ctx.quadraticCurveTo(960, 495, 865, 555);
+                ctx.stroke();
+                ctx.restore();
+
+                // Fungsi Gambar Pulau 3D Sinematik Lengkap
+                const draw3DIsland = (cx, cy, rx, ry, type) => {
+                    // Cincin Air Dangkal Turquoise & Buih Pantai Putih
+                    const reefGrad = ctx.createRadialGradient(cx, cy + 12, rx * 0.45, cx, cy + 12, rx * 1.38);
+                    reefGrad.addColorStop(0, 'rgba(103, 232, 249, 0.98)');
+                    reefGrad.addColorStop(0.58, 'rgba(34, 211, 238, 0.65)');
+                    reefGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+                    ctx.fillStyle = reefGrad;
+                    ctx.beginPath(); ctx.ellipse(cx, cy + 14, rx * 1.38, ry * 1.45, 0, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.strokeStyle = 'rgba(255,255,255,0.65)';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath(); ctx.ellipse(cx, cy + 10, rx * 1.12, ry * 1.14, 0, 0, Math.PI * 2); ctx.stroke();
+
+                    // Pantai Pasir Emas
+                    ctx.fillStyle = '#FDE68A';
+                    ctx.beginPath(); ctx.ellipse(cx, cy + 8, rx * 1.06, ry * 1.08, 0, 0, Math.PI * 2); ctx.fill();
+
+                    // Tebing Batu Pulau 3D
+                    const cliffGrad = ctx.createLinearGradient(cx, cy - ry, cx, cy + ry);
+                    cliffGrad.addColorStop(0, '#A8A29E');
+                    cliffGrad.addColorStop(0.45, '#57534E');
+                    cliffGrad.addColorStop(1, '#292524');
+                    ctx.fillStyle = cliffGrad;
+                    ctx.beginPath(); ctx.ellipse(cx, cy + 2, rx, ry * 0.96, 0, 0, Math.PI * 2); ctx.fill();
+
+                    // Bukit Rumput Tropis Berlapis
+                    const grassGrad = ctx.createRadialGradient(cx - 20, cy - 22, 10, cx, cy - 10, rx * 0.98);
+                    grassGrad.addColorStop(0, '#86EFAC');
+                    grassGrad.addColorStop(0.5, '#16A34A');
+                    grassGrad.addColorStop(1, '#14532D');
+                    ctx.fillStyle = grassGrad;
+                    ctx.beginPath(); ctx.ellipse(cx, cy - 12, rx * 0.95, ry * 0.84, 0, 0, Math.PI * 2); ctx.fill();
+
+                    // Diorama Bangunan Khas Tiap Stage di Atas Pulau
+                    if (type === 1) {
+                        // Stage 1: Colosseum Batu & Portal Suara Biru Bercahaya
+                        ctx.fillStyle = '#CBD5E1';
+                        ctx.beginPath(); ctx.ellipse(cx, cy - 24, 78, 32, 0, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = '#64748B';
+                        ctx.beginPath(); ctx.ellipse(cx, cy - 24, 62, 22, 0, 0, Math.PI * 2); ctx.fill();
+                        const portalG = ctx.createRadialGradient(cx, cy - 28, 4, cx, cy - 28, 38);
+                        portalG.addColorStop(0, '#FFFFFF');
+                        portalG.addColorStop(0.45, '#38BDF8');
+                        portalG.addColorStop(1, '#0284C7');
+                        ctx.fillStyle = portalG;
+                        ctx.beginPath(); ctx.arc(cx, cy - 26, 32, Math.PI, 0); ctx.fill();
+                        // Gelombang Suara di Portal
+                        ctx.strokeStyle = '#FFFFFF';
+                        ctx.lineWidth = 2.5;
+                        ctx.beginPath();
+                        ctx.moveTo(cx - 20, cy - 38); ctx.lineTo(cx - 12, cy - 48); ctx.lineTo(cx - 4, cy - 30);
+                        ctx.lineTo(cx + 4, cy - 52); ctx.lineTo(cx + 12, cy - 32); ctx.lineTo(cx + 20, cy - 42);
+                        ctx.stroke();
+                    } else if (type === 2) {
+                        // Stage 2: Air Terjun Bertingkat & Hutan Safari
+                        const wfG = ctx.createLinearGradient(cx - 22, cy - 35, cx + 22, cy + 52);
+                        wfG.addColorStop(0, '#FFFFFF');
+                        wfG.addColorStop(0.5, '#38BDF8');
+                        wfG.addColorStop(1, '#E0F2FE');
+                        ctx.fillStyle = wfG;
+                        fillRoundedRectSafe(ctx, cx - 24, cy - 26, 48, 74, 10);
+                        ctx.fill();
+                        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+                        ctx.beginPath(); ctx.ellipse(cx, cy + 46, 34, 10, 0, 0, Math.PI * 2); ctx.fill();
+                    } else if (type === 3) {
+                        // Stage 3: Rumah Pohon Laboratorium & Simbol Nada Bercahaya
+                        ctx.fillStyle = '#78350F';
+                        fillRoundedRectSafe(ctx, cx - 54, cy - 52, 108, 42, 10);
+                        ctx.fill();
+                        const labGlow = ctx.createRadialGradient(cx, cy - 32, 4, cx, cy - 32, 36);
+                        labGlow.addColorStop(0, '#FFFFFF');
+                        labGlow.addColorStop(0.5, '#38BDF8');
+                        labGlow.addColorStop(1, 'rgba(2,132,199,0)');
+                        ctx.fillStyle = labGlow;
+                        ctx.beginPath(); ctx.arc(cx, cy - 32, 34, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.font = 'bold 28px Fredoka, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('♫', cx, cy - 22);
+                    } else if (type === 4) {
+                        // Stage 4: Arena Kolosseum Obor Menyala
+                        ctx.fillStyle = '#D97706';
+                        ctx.beginPath(); ctx.ellipse(cx, cy - 22, 68, 28, 0, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = '#FDE68A';
+                        ctx.beginPath(); ctx.ellipse(cx, cy - 22, 52, 19, 0, 0, Math.PI * 2); ctx.fill();
+                    } else if (type === 5) {
+                        // Stage 5: Panggung Pameran Sonic Expo Berkilau Emas
+                        ctx.fillStyle = '#991B1B';
+                        fillRoundedRectSafe(ctx, cx - 54, cy - 52, 108, 40, 8);
+                        ctx.fill();
+                        const expoG = ctx.createRadialGradient(cx, cy - 30, 4, cx, cy - 30, 36);
+                        expoG.addColorStop(0, '#FEF08A');
+                        expoG.addColorStop(0.6, '#F59E0B');
+                        expoG.addColorStop(1, 'rgba(180,83,9,0)');
+                        ctx.fillStyle = expoG;
+                        ctx.beginPath(); ctx.arc(cx, cy - 30, 34, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = '#FEF08A';
+                        ctx.font = 'bold 26px Fredoka, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('𝄞', cx, cy - 20);
+                    }
+
+                    // Pohon Palem Tropis 3D di Sekeliling Pulau
+                    [-rx * 0.68, -rx * 0.42, rx * 0.42, rx * 0.68].forEach((ox, idx) => {
+                        const pyOff = (idx % 2 === 0) ? -10 : -22;
+                        ctx.strokeStyle = '#78350F';
+                        ctx.lineWidth = 5;
+                        ctx.beginPath();
+                        ctx.moveTo(cx + ox, cy + pyOff);
+                        ctx.quadraticCurveTo(cx + ox * 1.08, cy + pyOff - 24, cx + ox * 1.15, cy + pyOff - 40);
+                        ctx.stroke();
+                        ctx.fillStyle = idx % 2 === 0 ? '#15803D' : '#22C55E';
+                        ctx.beginPath();
+                        ctx.arc(cx + ox * 1.15, cy + pyOff - 42, 14, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                };
+
+                draw3DIsland(235, 340, 152, 62, 1);
+                draw3DIsland(640, 265, 160, 64, 2);
+                draw3DIsland(1045, 340, 152, 62, 3);
+                draw3DIsland(430, 560, 150, 58, 4);
+                draw3DIsland(855, 560, 150, 58, 5);
+                return;
+            }
+
+            // SCENE 3D VOLUMETRIK SITUASIONAL UNTUK SLIDE 1 DAN SLIDE 3–21
+            const stg = slideMeta[slideNum]?.stage || 0;
+            const stageThemes = {
+                0: { skyTop: '#0284C7', skyMid: '#38BDF8', skyBot: '#FEF9C3', sun: '#FEF08A', hill1: '#15803D', hill2: '#16A34A', hill3: '#14532D' },
+                1: { skyTop: '#0284C7', skyMid: '#7DD3FC', skyBot: '#FEF3C7', sun: '#FDE047', hill1: '#16A34A', hill2: '#22C55E', hill3: '#15803D' },
+                2: { skyTop: '#0369A1', skyMid: '#10B981', skyBot: '#D1FAE5', sun: '#FEF08A', hill1: '#047857', hill2: '#059669', hill3: '#064E3B' },
+                3: { skyTop: '#78350F', skyMid: '#B45309', skyBot: '#FEF3C7', sun: '#FBBF24', hill1: '#451A03', hill2: '#78350F', hill3: '#271206' },
+                4: { skyTop: '#31102F', skyMid: '#6B21A8', skyBot: '#FDE68A', sun: '#F59E0B', hill1: '#3B0764', hill2: '#581C87', hill3: '#1E1B4B' },
+                5: { skyTop: '#1E1B4B', skyMid: '#BE123C', skyBot: '#FEF08A', sun: '#FACC15', hill1: '#15803D', hill2: '#166534', hill3: '#064E3B' }
+            };
+            const th = stageThemes[stg] || stageThemes[0];
+
+            const skyG = ctx.createLinearGradient(0, 0, 0, H);
+            skyG.addColorStop(0, th.skyTop);
+            skyG.addColorStop(0.55, th.skyMid);
+            skyG.addColorStop(1, th.skyBot);
+            ctx.fillStyle = skyG;
+            ctx.fillRect(0, 0, W, H);
+
+            // Cahaya Volumetrik Matahari / Sorot Sinematik
+            const sunG = ctx.createRadialGradient(W * 0.5, H * 0.28, 15, W * 0.5, H * 0.28, 520);
+            sunG.addColorStop(0, '#FFFFFF');
+            sunG.addColorStop(0.28, th.sun);
+            sunG.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = sunG;
+            ctx.fillRect(0, 0, W, H);
+
+            // Perbukitan & Lingkungan Berlapis
+            ctx.fillStyle = th.hill1;
+            ctx.beginPath();
+            ctx.moveTo(0, H * 0.65);
+            ctx.quadraticCurveTo(W * 0.28, H * 0.50, W * 0.55, H * 0.64);
+            ctx.quadraticCurveTo(W * 0.82, H * 0.76, W, H * 0.58);
+            ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = th.hill2;
+            ctx.beginPath();
+            ctx.moveTo(0, H * 0.74);
+            ctx.quadraticCurveTo(W * 0.35, H * 0.62, W * 0.70, H * 0.73);
+            ctx.quadraticCurveTo(W * 0.88, H * 0.80, W, H * 0.68);
+            ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+            ctx.fill();
+
+            // Plaza Batu / Dek Kayu di Foreground
+            ctx.fillStyle = stg === 3 ? '#78350F' : '#D6D3D1';
+            ctx.fillRect(0, H * 0.82, W, H * 0.18);
+
+            if (slideNum === 1) {
+                // Gerbang Batu Kuno Berukir Ikon Bunyi & Portal Biru Bercahaya + Lentera Emas di Puncak
+                ctx.save();
+                ctx.strokeStyle = '#64748B';
+                ctx.lineWidth = 68;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.arc(W * 0.5, H * 0.56, 250, Math.PI, 0);
+                ctx.stroke();
+
+                const portalGlow = ctx.createRadialGradient(W * 0.5, H * 0.54, 20, W * 0.5, H * 0.54, 225);
+                portalGlow.addColorStop(0, 'rgba(255, 255, 255, 0.98)');
+                portalGlow.addColorStop(0.45, 'rgba(56, 189, 248, 0.85)');
+                portalGlow.addColorStop(1, 'rgba(2, 132, 199, 0)');
+                ctx.fillStyle = portalGlow;
+                ctx.beginPath();
+                ctx.arc(W * 0.5, H * 0.54, 220, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Lentera Bercahaya di Puncak Gerbang
+                ctx.fillStyle = '#FACC15';
+                ctx.beginPath();
+                ctx.arc(W * 0.5, H * 0.12, 32, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            } else if (stg === 1) {
+                // Stage 1: Halaman Sekolah Pagi Hari & Gerbang Batu
+                ctx.fillStyle = '#FEF3C7';
+                fillRoundedRectSafe(ctx, 90, H * 0.36, 260, 180, 12);
+                ctx.fill();
+                ctx.fillStyle = '#DC2626';
+                ctx.beginPath();
+                ctx.moveTo(70, H * 0.36); ctx.lineTo(220, H * 0.22); ctx.lineTo(370, H * 0.36);
+                ctx.closePath(); ctx.fill();
+            } else if (stg === 2) {
+                // Stage 2: Air Terjun Hutan Tropis & Rumah Pohon
+                const wf = ctx.createLinearGradient(W * 0.72, H * 0.25, W * 0.84, H * 0.82);
+                wf.addColorStop(0, '#FFFFFF');
+                wf.addColorStop(0.5, '#38BDF8');
+                wf.addColorStop(1, '#BAE6FD');
+                ctx.fillStyle = wf;
+                fillRoundedRectSafe(ctx, W * 0.72, H * 0.25, 135, H * 0.56, 20);
+                ctx.fill();
+            } else if (stg === 3) {
+                // Stage 3: Interior Rumah Pohon Sonic Lab & Lampu Gantung Hangat
+                [0.2, 0.4, 0.6, 0.8].forEach(rx => {
+                    const lg = ctx.createRadialGradient(W * rx, 95, 4, W * rx, 95, 85);
+                    lg.addColorStop(0, '#FEF08A');
+                    lg.addColorStop(1, 'rgba(250,204,21,0)');
+                    ctx.fillStyle = lg;
+                    ctx.beginPath(); ctx.arc(W * rx, 95, 85, 0, Math.PI * 2); ctx.fill();
+                });
+            } else if (stg === 4) {
+                // Stage 4: Pilar Kolosseum Batu & Obor Api Menyala
+                [120, 260, W - 260, W - 120].forEach(px => {
+                    ctx.fillStyle = '#A8A29E';
+                    fillRoundedRectSafe(ctx, px - 24, H * 0.24, 48, H * 0.58, 8);
+                    ctx.fill();
+                    const fg = ctx.createRadialGradient(px, H * 0.22, 4, px, H * 0.22, 42);
+                    fg.addColorStop(0, '#FEF08A');
+                    fg.addColorStop(0.5, '#F97316');
+                    fg.addColorStop(1, 'rgba(239,68,68,0)');
+                    ctx.fillStyle = fg;
+                    ctx.beginPath(); ctx.arc(px, H * 0.22, 42, 0, Math.PI * 2); ctx.fill();
+                });
+            } else if (stg === 5) {
+                // Stage 5: Panggung Taman Sonic Expo & Untaian Lampu Hias
+                for (let i = 1; i <= 11; i++) {
+                    const lx = (W / 12) * i;
+                    const ly = 75 + Math.sin(i * 0.8) * 22;
+                    ctx.fillStyle = i % 2 === 0 ? '#FEF08A' : '#38BDF8';
+                    ctx.beginPath(); ctx.arc(lx, ly, 10, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+
+            // Partikel Cahaya / Kunang-kunang 3D
+            for (let i = 0; i < 28; i++) {
+                const px = ((i * 197 + slideNum * 83) % (W - 80)) + 40;
+                const py = ((i * 131 + slideNum * 47) % (H - 120)) + 50;
+                const r = (i % 3) + 2;
+                ctx.fillStyle = 'rgba(254, 240, 138, 0.72)';
+                ctx.beginPath();
+                ctx.arc(px, py, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        /* ==============================================================
+           FULL 21-SLIDE + CHARACTERS + ITEMS NANO-BANANA 3D ENGINE
+        ============================================================== */
+        const SLIDE_PROMPTS_3D = {
+            1: "Majestic ancient mossy stone gate carved with speaker, sound waves, drum, musical notes, leaves, and book in a lush tropical forest. Glowing magical blue portal in the center of the gate, a lit golden lantern at the top peak, stone plaza in foreground, high-end 3D Pixar animated movie aesthetic, volumetric morning light, 16:9, no text",
+            2: "3D isometric Pixar style adventure game island map in crystal turquoise tropical ocean, 5 lush islands with (1) stone colosseum gate with glowing blue sound portal, (2) jungle waterfall island, (3) treehouse dome lab with glowing musical note, (4) stone colosseum arena with torches, and (5) festive outdoor garden stage, connected by wooden rope bridges, bright sunny sky, 16:9, no text",
+            3: "3D Pixar animated elementary school courtyard entrance with an ancient stone arch in the morning, warm sunlight beams filtering through green trees, vibrant flowers, 16:9, no text",
+            4: "3D Pixar animated elementary school yard in the morning, brass school bell on the porch, colorful birds on a tree branch, red-white scooter outside the gate, acoustic guitar on a wooden bench, 16:9, no text",
+            5: "3D Pixar animated outdoor wooden science table in a sunny school garden near a stone gate, magnifying glass, musical strings, drum, tin can telephone, glass bottles with colored water, 16:9, no text",
+            6: "Lush 3D Pixar tropical jungle with a sparkling waterfall in the background, wooden explorer deck in the foreground, exotic colorful plants, warm volumetric sunlight, 16:9, no text",
+            7: "3D Pixar open-air wooden treehouse classroom in a lush jungle, glowing blue sound waves floating in the air, warm lighting, 16:9, no text",
+            8: "3D Pixar tropical jungle treetop observation deck with wooden railings, lush green canopy, sunny sky, 16:9, no text",
+            9: "3D Pixar wooden detective deck near a sparkling jungle waterfall, lanterns, tropical foliage, 16:9, no text",
+            10: "3D Pixar cozy treehouse science laboratory inside a giant tree, warm glowing Edison bulbs, wooden workbenches, glass bottles with colored water, string telephones, acoustic instruments, 16:9, no text",
+            11: "3D Pixar close-up of a wooden laboratory workbench inside a treehouse with plastic cups and glowing string telephone, warm lighting, 16:9, no text",
+            12: "3D Pixar science laboratory workbench showing a wooden block, glass water tank, and glowing sound wave rings, warm treehouse interior, 16:9, no text",
+            13: "3D Pixar musical instrument exhibition rack inside a cozy wooden treehouse laboratory, flute, drum, acoustic guitar, violin, and bamboo angklung, warm lighting, 16:9, no text",
+            14: "3D Pixar grand stone colosseum arena with glowing warm torches, magical blue sound wave runes on the stone floor, dramatic twilight sky, family-friendly game arena, 16:9, no text",
+            15: "3D Pixar center stage of an ancient stone colosseum arena with five glowing stone pillars and warm torches, twilight sky, 16:9, no text",
+            16: "3D Pixar audio podium inside a stone colosseum arena with giant carved stone speakers glowing with blue sound waves, warm torches, 16:9, no text",
+            17: "3D Pixar grand boss podium inside a stone colosseum arena featuring five glass bottles filled with colorful water at different levels glowing under golden spotlights, 16:9, no text",
+            18: "3D Pixar festive outdoor garden science expo stage at golden hour with warm string lights, colorful banners, wooden exhibition booths, lush trees, 16:9, no text",
+            19: "3D Pixar wooden gallery booth at an outdoor garden science festival with glowing bulletin board and warm string lights, 16:9, no text",
+            20: "3D Pixar peaceful garden corner near a festival stage at dusk with wooden benches, glowing warm lanterns, and fireflies, 16:9, no text",
+            21: "3D Pixar grand celebration stage at night in a magical garden, golden confetti, soft fireworks in the starry sky, glowing lanterns, golden trophy on stage, 16:9, no text"
+        };
+
+        const CHAR_PROMPTS_3D = {
+            boy_student: "3D Pixar style cute Indonesian elementary school boy, curly brown hair, cheerful expressive face, wearing white short-sleeve school shirt, red tie, red shorts, brown backpack, 3D cartoon character bust portrait, soft studio lighting, plain light sky blue background, no text",
+            girl_student: "3D Pixar style cute Indonesian elementary school girl, long brown hair with red ribbon, bright curious eyes, wearing white short-sleeve school shirt, red tie, red pleated skirt, brown backpack, 3D cartoon character bust portrait, soft studio lighting, plain warm cream background, no text",
+            pakguru: "3D Pixar style friendly Indonesian male teacher wearing glasses, warm smile, cream button-up explorer shirt with dark tie, 3D cartoon character bust portrait, soft studio lighting, plain warm background, no text",
+            buguru: "3D Pixar style friendly Indonesian female teacher with long wavy brown hair, wearing cream safari explorer shirt, warm smile, 3D cartoon character bust portrait, soft studio lighting, plain warm background, no text"
+        };
+
+        const ITEM_PROMPTS_3D = {
+            bel: "3D Pixar style shiny golden brass hand school bell with wooden handle, centered on pure white background, product icon render, no text",
+            burung: "3D Pixar style cute blue and yellow singing bird perched on a small green branch with colorful musical notes, centered on pure white background, no text",
+            kendaraan: "3D Pixar style glossy red and white modern motor scooter, centered on pure white background, no text",
+            gitar: "3D Pixar style wooden acoustic guitar, centered on pure white background, no text",
+            senar_gitar: "3D Pixar style coiled golden and silver metallic guitar strings, centered on pure white background, no text",
+            membran_drum: "3D Pixar style top-down view of a snare drum head with chrome rim, centered on pure white background, no text",
+            telepon_kaleng: "3D Pixar style two colorful cups connected by a taut golden string (cup telephone), centered on pure white background, no text",
+            botol_air: "3D Pixar style five glass bottles filled with colorful red, orange, yellow, green, and blue water at different levels, centered on pure white background, no text",
+            hujan: "3D Pixar style cute dark storm cloud with falling blue raindrops and water splash, centered on pure white background, no text",
+            tepuk_tangan: "3D Pixar style two cheerful hands clapping with yellow sound spark lines, centered on pure white background, no text",
+            gajah: "3D Pixar style cute friendly gray elephant trumpeting, centered on pure white background, no text",
+            paus: "3D Pixar style humpback whale swimming, centered on pure white background, no text",
+            piano: "3D Pixar style glossy grand piano keys, centered on pure white background, no text",
+            nyamuk: "3D Pixar style cute stylized cartoon mosquito flapping wings, centered on pure white background, no text",
+            anjing: "3D Pixar style cute golden retriever puppy tilting head listening, centered on pure white background, no text",
+            kelelawar: "3D Pixar style cute purple cartoon bat emitting sound waves, centered on pure white background, no text"
+        };
+
+        async function callNanoBananaImageAPI(promptText, aspectRatio = "16:9") {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ role: 'user', parts: [{ text: promptText }] }],
+                generationConfig: {
+                    responseModalities: ['IMAGE'],
+                    imageConfig: { aspectRatio }
+                }
+            };
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) return null;
+            const data = await res.json();
+            const part = data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+            if (part && part.inlineData?.data) {
+                return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+            }
+            return null;
+        }
+
+        async function requestSilentNanoBananaSlide(slideNum) {
+            if (aiSlideBgCache[slideNum] || aiSlideInFlight[slideNum]) return;
+            const promptText = SLIDE_PROMPTS_3D[slideNum];
+            if (!promptText) return;
+            aiSlideInFlight[slideNum] = true;
+            try {
+                const imgUrl = await callNanoBananaImageAPI(promptText, "16:9");
+                if (imgUrl) {
+                    aiSlideBgCache[slideNum] = imgUrl;
+                    if (state.currentSlide === slideNum) {
+                        const aiImg = document.getElementById('env-ai-img');
+                        if (aiImg) {
+                            aiImg.src = imgUrl;
+                            aiImg.classList.remove('opacity-0');
+                        }
+                    }
+                }
+            } catch (e) {} finally {
+                aiSlideInFlight[slideNum] = false;
+            }
+        }
+
+        async function requestSilentNanoBananaCharacter(charKey) {
+            if (aiCharCache[charKey] || aiCharInFlight[charKey]) return;
+            const promptText = CHAR_PROMPTS_3D[charKey];
+            if (!promptText) return;
+            aiCharInFlight[charKey] = true;
+            try {
+                const imgUrl = await callNanoBananaImageAPI(promptText, "1:1");
+                if (imgUrl) {
+                    aiCharCache[charKey] = imgUrl;
+                    document.querySelectorAll(`[data-char-key="${charKey}"]`).forEach(el => {
+                        el.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover rounded-2xl" alt="${charKey}">`;
+                    });
+                    updateTopHudPlayerBadge();
+                }
+            } catch (e) {} finally {
+                aiCharInFlight[charKey] = false;
+            }
+        }
+
+        async function requestSilentNanoBananaItem(itemKey) {
+            if (aiItemCache[itemKey] || aiItemInFlight[itemKey]) return;
+            const promptText = ITEM_PROMPTS_3D[itemKey];
+            if (!promptText) return;
+            aiItemInFlight[itemKey] = true;
+            try {
+                const imgUrl = await callNanoBananaImageAPI(promptText, "1:1");
+                if (imgUrl) {
+                    aiItemCache[itemKey] = imgUrl;
+                    document.querySelectorAll(`[data-item-key="${itemKey}"]`).forEach(box => {
+                        box.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-contain z-10" alt="${itemKey}">`;
+                    });
+                }
+            } catch (e) {} finally {
+                aiItemInFlight[itemKey] = false;
+            }
+        }
+
+        async function generateDeveloperPortraitAI() {
+            showToast("Merender potret 3D Pixar Tim Pengembang...", "✨");
+            const prompt = "3D Pixar style group portrait inside a golden circular medallion frame in front of a sunny elementary school building and green trees, floating open book, glowing yellow lightbulb, and graduation cap at top. Three friendly Indonesian teachers in black formal suits and ties: on the left a female teacher with wavy brown hair holding a yellow book, in the center a male teacher with short black hair and thin goatee with arms crossed wearing a smartwatch, on the right a female teacher with long straight black hair holding a pink book, high-end 3D animated movie render, 4:3, no text";
+            const imgUrl = await callNanoBananaImageAPI(prompt, "4:3");
+            if (imgUrl) {
+                const img = document.getElementById('dev-ref-photo');
+                const wrap = document.getElementById('dev-3d-canvas-wrap');
+                if (img) {
+                    img.src = imgUrl;
+                    img.classList.remove('hidden');
+                }
+                if (wrap) wrap.classList.add('hidden');
+                showToast("Potret 3D Pixar Tim Pengembang berhasil diperbarui!", "🎉");
+            }
+        }
+
+        /* ==============================================================
+           TIM PENGEMBANG 3D MEDALLION CANVAS RENDERER
+        ============================================================== */
+        function handleDeveloperRefUpload(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const url = URL.createObjectURL(file);
+            const img = document.getElementById('dev-ref-photo');
+            const wrap = document.getElementById('dev-3d-canvas-wrap');
+            if (img) {
+                img.src = url;
+                img.classList.remove('hidden');
+            }
+            if (wrap) wrap.classList.add('hidden');
+            showToast("Gambar Tim Pengembang berhasil ditampilkan!", "🖼️");
+        }
+
+        function renderDeveloperMedallionCanvas() {
+            const canvas = document.getElementById('dev-medallion-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            const W = canvas.width;
+            const H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            const cx = W / 2;
+            const cy = 285;
+            const rad = 245;
+
+            // Bingkai Emas 3D
+            const goldG = ctx.createLinearGradient(cx - rad, cy - rad, cx + rad, cy + rad);
+            goldG.addColorStop(0, '#FEF08A');
+            goldG.addColorStop(0.5, '#F59E0B');
+            goldG.addColorStop(1, '#B45309');
+            ctx.fillStyle = goldG;
+            ctx.beginPath(); ctx.arc(cx, cy, rad + 16, 0, Math.PI * 2); ctx.fill();
+
+            ctx.save();
+            ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.clip();
+
+            // Langit & Gedung Sekolah Atap Merah
+            const skyG = ctx.createLinearGradient(0, cy - rad, 0, cy + rad);
+            skyG.addColorStop(0, '#0284C7');
+            skyG.addColorStop(0.6, '#38BDF8');
+            skyG.addColorStop(1, '#E0F2FE');
+            ctx.fillStyle = skyG;
+            ctx.fillRect(cx - rad, cy - rad, rad * 2, rad * 2);
+
+            // Gedung Sekolah
+            ctx.fillStyle = '#DC2626';
+            ctx.beginPath();
+            ctx.moveTo(350, 215); ctx.lineTo(665, 145); ctx.lineTo(685, 220); ctx.lineTo(340, 260);
+            ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#FDE68A';
+            ctx.fillRect(365, 215, 290, 145);
+
+            // Pepohonan Hijau
+            ctx.fillStyle = '#16A34A';
+            ctx.beginPath();
+            ctx.arc(220, 250, 75, 0, Math.PI * 2);
+            ctx.arc(645, 265, 68, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Fungsi Gambar Karakter 3D Volumetrik
+            const draw3DPerson = (px, py, scale, gender, hairStyle, bookColor) => {
+                ctx.save();
+                ctx.translate(px, py);
+                ctx.scale(scale, scale);
+
+                if (gender === 'female') {
+                    const hairG = ctx.createRadialGradient(0, -35, 10, 0, 0, 95);
+                    hairG.addColorStop(0, hairStyle === 'wavy' ? '#78350F' : '#334155');
+                    hairG.addColorStop(1, hairStyle === 'wavy' ? '#3E1F0D' : '#0F172A');
+                    ctx.fillStyle = hairG;
+                    ctx.beginPath();
+                    ctx.arc(0, 10, 76, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Jas Hitam Formal & Dasi Hitam
+                const suitG = ctx.createLinearGradient(-75, 70, 75, 220);
+                suitG.addColorStop(0, '#334155');
+                suitG.addColorStop(0.5, '#1E293B');
+                suitG.addColorStop(1, '#0F172A');
+                ctx.fillStyle = suitG;
+                fillRoundedRectSafe(ctx, -78, 74, 156, 155, 36);
+                ctx.fill();
+
+                // Kemeja Putih & Dasi
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.moveTo(-22, 74); ctx.lineTo(22, 74); ctx.lineTo(8, 158); ctx.lineTo(-8, 158);
+                ctx.closePath(); ctx.fill();
+                ctx.fillStyle = '#0F172A';
+                ctx.beginPath();
+                ctx.moveTo(-7, 86); ctx.lineTo(7, 86); ctx.lineTo(10, 156); ctx.lineTo(0, 168); ctx.lineTo(-10, 156);
+                ctx.closePath(); ctx.fill();
+
+                // Wajah 3D Subsurface Shading
+                const skinG = ctx.createRadialGradient(-14, -18, 8, 0, 0, 62);
+                skinG.addColorStop(0, gender === 'female' ? '#FFF1E6' : '#FDE2C8');
+                skinG.addColorStop(0.65, gender === 'female' ? '#F7C6A3' : '#E8AC82');
+                skinG.addColorStop(1, gender === 'female' ? '#D4946A' : '#B87B52');
+                ctx.fillStyle = skinG;
+                ctx.beginPath(); ctx.arc(0, 0, 56, 0, Math.PI * 2); ctx.fill();
+
+                // Rambut Atas
+                ctx.fillStyle = hairStyle === 'wavy' ? '#4A2511' : '#111827';
+                ctx.beginPath();
+                ctx.arc(0, -18, 57, Math.PI * 0.92, Math.PI * 2.08);
+                ctx.fill();
+
+                // Mata 3D Berkilau
+                [-21, 21].forEach(ex => {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath(); ctx.ellipse(ex, 0, 11.5, 13, 0, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#3E1F0D';
+                    ctx.beginPath(); ctx.arc(ex + (ex < 0 ? 1 : -1), 0, 7.5, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath(); ctx.arc(ex - 2.5, -3.5, 2.8, 0, Math.PI * 2); ctx.fill();
+                });
+
+                // Senyum & Janggut Tipis (Untuk Ferliyan Reza di Tengah)
+                ctx.strokeStyle = gender === 'female' ? '#E11D48' : '#7F1D1D';
+                ctx.lineWidth = 3.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath(); ctx.arc(0, 18, 16, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+
+                if (gender === 'male') {
+                    ctx.strokeStyle = '#1F2937';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath(); ctx.arc(0, 22, 32, 0.25 * Math.PI, 0.75 * Math.PI); ctx.stroke();
+                    // Lengan Bersedekap & Smartwatch
+                    ctx.fillStyle = '#0F172A';
+                    fillRoundedRectSafe(ctx, -68, 136, 136, 38, 16);
+                    ctx.fill();
+                    ctx.fillStyle = '#38BDF8';
+                    fillRoundedRectSafe(ctx, -20, 133, 16, 22, 4);
+                    ctx.fill();
+                } else if (bookColor) {
+                    ctx.fillStyle = bookColor;
+                    fillRoundedRectSafe(ctx, bookColor === '#FACC15' ? -56 : 10, 108, 56, 72, 6);
+                    ctx.fill();
+                }
+                ctx.restore();
+            };
+
+            // Teresa (Kiri), Eprina (Kanan), Ferliyan (Tengah Depan)
+            draw3DPerson(285, 275, 0.92, 'female', 'wavy', '#FACC15');
+            draw3DPerson(575, 275, 0.92, 'female', 'straight', '#EC4899');
+            draw3DPerson(430, 250, 1.04, 'male', 'short', null);
+
+            ctx.restore();
+
+            // Papan Nama 3 Pengembang
+            const drawNameTag = (bx, by, line1, line2, role) => {
+                ctx.save();
+                ctx.translate(bx, by);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.strokeStyle = '#0284C7';
+                ctx.lineWidth = 4;
+                fillRoundedRectSafe(ctx, -115, 0, 230, 56, 20);
+                ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = '#0F172A';
+                ctx.font = 'bold 15px Fredoka, sans-serif';
+                ctx.textAlign = 'center';
+                if (line2) {
+                    ctx.fillText(line1, 0, 24);
+                    ctx.fillText(line2, 0, 44);
+                } else {
+                    ctx.font = 'bold 18px Fredoka, sans-serif';
+                    ctx.fillText(line1, 0, 35);
+                }
+
+                ctx.fillStyle = '#FACC15';
+                ctx.strokeStyle = '#CA8A04';
+                ctx.lineWidth = 2.5;
+                fillRoundedRectSafe(ctx, -82, 48, 164, 34, 10);
+                ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = '#1E293B';
+                ctx.font = 'bold 13px Fredoka, sans-serif';
+                ctx.fillText(role, 0, 70);
+                ctx.restore();
+            };
+
+            drawNameTag(175, 435, 'Teresa Avilla Ayuning', 'Budi Cayestu', 'Guru SD Montessori');
+            drawNameTag(430, 448, 'Ferliyan Reza', '', 'Guru SMP');
+            drawNameTag(685, 435, 'Eprina Roganda', 'Br. Singo-Ringo', 'Guru B. Indonesia SMP');
+        }
+
+        function fillAllStageStars() {
+            state.stageStars = { 1: 5, 2: 5, 3: 5, 4: 4, 5: 4 };
+            playSoundEffect('fanfare');
+            showToast("Seluruh bintang di 5 pulau telah terisi penuh!", "⭐");
+            goToSlide(state.currentSlide);
+        }
+
+        function resetAllStageStars() {
+            state.stageStars = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            state.completedTasks = {};
+            showToast("Progres bintang telah direset ke 0.", "🔄");
+            goToSlide(state.currentSlide);
+        }
+
+        /* ==============================================================
+           WEB AUDIO SYNTHESIZER & SPEECH NARRATION
+        ============================================================== */
+        let audioCtx = null;
+        function ensureAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function toggleMute() {
+            state.soundEnabled = !state.soundEnabled;
+            const btn = document.getElementById('btn-sound-toggle');
+            if (btn) btn.innerText = state.soundEnabled ? '🔊' : '🔇';
+            if (!state.soundEnabled && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            showToast(state.soundEnabled ? "Efek Suara Diaktifkan!" : "Efek Suara Dimatikan", state.soundEnabled ? "🔊" : "🔇");
+        }
+
+        function speakIndonesianNarration(text) {
+            if (!state.soundEnabled || !('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.lang = 'id-ID';
+                utter.rate = 1.0;
+                utter.pitch = 1.08;
+                window.speechSynthesis.speak(utter);
+            } catch (e) {}
+        }
+
+        function playSoundEffect(type) {
+            if (!state.soundEnabled) return;
+            try {
+                ensureAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.08);
+                } else if (type === 'bell') {
+                    [880, 1760, 2640].forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now);
+                        gain.gain.setValueAtTime(0.2 / (i + 1), now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(now); osc.stop(now + 1.1);
+                    });
+                } else if (type === 'drum') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(38, now + 0.35);
+                    gain.gain.setValueAtTime(0.45, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.35);
+                } else if (type === 'guitar') {
+                    [330, 440, 554, 659].forEach((f, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(f, now + idx * 0.06);
+                        gain.gain.setValueAtTime(0.14, now + idx * 0.06);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.7);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(now + idx * 0.06); osc.stop(now + idx * 0.06 + 0.7);
+                    });
+                } else if (type === 'bird') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1800, now);
+                    osc.frequency.linearRampToValueAtTime(2800, now + 0.12);
+                    osc.frequency.linearRampToValueAtTime(2100, now + 0.25);
+                    osc.frequency.linearRampToValueAtTime(3100, now + 0.4);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.45);
+                } else if (type === 'rain' || type === 'desah') {
+                    const bufferSize = audioCtx.sampleRate * 0.6;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 1000;
+                    const gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+                    noise.start(now);
+                } else if (type === 'clap' || type === 'dentum') {
+                    const bufferSize = audioCtx.sampleRate * 0.35;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.08));
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.5, now);
+                    noise.connect(gain); gain.connect(audioCtx.destination);
+                    noise.start(now);
+                } else if (type === 'flute' || type === 'nada') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.25);
+                    osc.frequency.setValueAtTime(783.99, now + 0.5);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                    osc.connect(gain); gain.connect(audioCtx.destination);
+                    osc.start(now); osc.stop(now + 0.9);
+                } else if (type === 'cup_clear') {
+                    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(f, now + i * 0.12);
+                        gain.gain.setValueAtTime(0.25, now + i * 0.12);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.25);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(now + i * 0.12); osc.stop(now + i * 0.12 + 0.25);
+                    });
+                } else if (type === 'cup_muffled') {
+                    [180, 165, 150].forEach((f, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(f, now + i * 0.18);
+                        gain.gain.setValueAtTime(0.06, now + i * 0.18);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.18 + 0.2);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(now + i * 0.18); osc.stop(now + i * 0.18 + 0.2);
+                    });
+                } else if (type === 'fanfare') {
+                    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(f, now + i * 0.1);
+                        gain.gain.setValueAtTime(0.22, now + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.45);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(now + i * 0.1); osc.stop(now + i * 0.1 + 0.45);
+                    });
+                }
+            } catch (err) {}
+        }
+
+        function playBottleNote(bottleIndex) {
+            if (!state.soundEnabled) return;
+            try {
+                ensureAudio();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                const strikeFreqs = [392.00, 440.00, 523.25, 587.33, 659.25];
+                const blowFreqs   = [659.25, 587.33, 523.25, 440.00, 392.00];
+                const freq = state.slide17Mode === 'Ketuk Botol' ? strikeFreqs[bottleIndex] : blowFreqs[bottleIndex];
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = state.slide17Mode === 'Ketuk Botol' ? 'sine' : 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0.28, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(now); osc.stop(now + 0.65);
+            } catch (err) {}
+        }
+
+        function showToast(msg, icon = "✨") {
+            const box = document.getElementById('toast-box');
+            const ic = document.getElementById('toast-icon');
+            const tx = document.getElementById('toast-text');
+            if (!box || !ic || !tx) return;
+            ic.innerText = icon;
+            tx.innerText = msg;
+            box.classList.remove('hidden');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => box.classList.add('hidden'), 3200);
+        }
+
+        /* ==============================================================
+           AVATAR LINGKARAN SETENGAH BADAN & KARAKTER 3D
+        ============================================================== */
+        function getHalfBodyAvatarSVG(gender = 'boy') {
+            const charKey = gender === 'girl' ? 'girl_student' : 'boy_student';
+            if (aiCharCache[charKey]) {
+                return `<img src="${aiCharCache[charKey]}" class="w-full h-full object-cover" alt="${gender}">`;
+            }
+            requestSilentNanoBananaCharacter(charKey);
+            if (gender === 'girl') {
+                return `
+                <svg viewBox="0 0 120 120" class="w-full h-full">
+                    <defs>
+                        <radialGradient id="girlSkin" cx="45%" cy="38%" r="60%">
+                            <stop offset="0%" stop-color="#FFE4D0"/><stop offset="65%" stop-color="#F5C3A2"/><stop offset="100%" stop-color="#D9956C"/>
+                        </radialGradient>
+                        <linearGradient id="hairDark" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#5A3118"/><stop offset="100%" stop-color="#2A1508"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="60" r="58" fill="#FFFBEB"/>
+                    <path d="M22 45 Q12 88 26 115 L94 115 Q108 88 98 45 C88 18, 32 18, 22 45 Z" fill="url(#hairDark)"/>
+                    <path d="M26 88 Q60 78 94 88 L102 120 L18 120 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                    <polygon points="54,84 66,84 69,116 60,120 51,116" fill="#E11D48"/>
+                    <path d="M30 22 Q45 12 56 26 Q42 32 30 22 Z" fill="#E11D48"/>
+                    <path d="M90 22 Q75 12 64 26 Q78 32 90 22 Z" fill="#E11D48"/>
+                    <circle cx="60" cy="54" r="28" fill="url(#girlSkin)"/>
+                    <path d="M31 46 C35 24, 85 24, 89 46 C76 34, 44 34, 31 46 Z" fill="url(#hairDark)"/>
+                    <ellipse cx="48" cy="54" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="49" cy="54" r="4.5" fill="#291811"/><circle cx="47" cy="51.5" r="1.8" fill="#FFFFFF"/>
+                    <ellipse cx="72" cy="54" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="71" cy="54" r="4.5" fill="#291811"/><circle cx="69" cy="51.5" r="1.8" fill="#FFFFFF"/>
+                    <path d="M50 67 Q60 75 70 67" stroke="#991B1B" stroke-width="3" stroke-linecap="round" fill="none"/>
+                </svg>`;
+            }
+            return `
+            <svg viewBox="0 0 120 120" class="w-full h-full">
+                <defs>
+                    <radialGradient id="boySkin" cx="45%" cy="38%" r="60%">
+                        <stop offset="0%" stop-color="#FFE0C8"/><stop offset="65%" stop-color="#F1B892"/><stop offset="100%" stop-color="#C98860"/>
+                    </radialGradient>
+                    <linearGradient id="boyHair" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#5A3118"/><stop offset="100%" stop-color="#2A1508"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="58" fill="#F0F9FF"/>
+                <path d="M24 88 Q60 78 96 88 L104 120 L16 120 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+                <polygon points="54,84 66,84 69,116 60,120 51,116" fill="#DC2626"/>
+                <circle cx="60" cy="54" r="28" fill="url(#boySkin)"/>
+                <circle cx="40" cy="30" r="13" fill="url(#boyHair)"/>
+                <circle cx="60" cy="24" r="16" fill="url(#boyHair)"/>
+                <circle cx="80" cy="30" r="13" fill="url(#boyHair)"/>
+                <ellipse cx="48" cy="54" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="49" cy="54" r="4.5" fill="#1E1B4B"/><circle cx="47" cy="51.5" r="1.8" fill="#FFFFFF"/>
+                <ellipse cx="72" cy="54" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="71" cy="54" r="4.5" fill="#1E1B4B"/><circle cx="69" cy="51.5" r="1.8" fill="#FFFFFF"/>
+                <path d="M50 67 Q60 76 70 67 Z" fill="#7F1D1D"/>
+            </svg>`;
+        }
+
+        function updateTopHudPlayerBadge() {
+            const av = document.getElementById('hud-player-avatar');
+            const nm = document.getElementById('hud-player-name');
+            if (av) av.innerHTML = getHalfBodyAvatarSVG(state.playerGender || 'boy');
+            if (nm) nm.innerText = state.playerName || 'Penjelajah Bunyi';
+        }
+
+        function getCharacterSVG(type, sizeClass = "w-24 h-32") {
+            let resolvedType = type;
+            if (type === 'player' || type === 'boy' || type === 'rani') {
+                resolvedType = state.playerGender === 'girl' ? 'girl_student' : 'boy_student';
+            }
+            if (aiCharCache[resolvedType]) {
+                return `<div data-char-key="${resolvedType}" class="${sizeClass} animate-float select-none drop-shadow-2xl rounded-2xl overflow-hidden border-2 border-amber-300 bg-white/90"><img src="${aiCharCache[resolvedType]}" class="w-full h-full object-cover" alt="${resolvedType}"></div>`;
+            }
+            requestSilentNanoBananaCharacter(resolvedType);
+            const svgs = {
+                boy_student: `<svg viewBox="0 0 140 175" class="w-full h-full"><ellipse cx="70" cy="166" rx="38" ry="7" fill="rgba(0,0,0,0.3)"/><rect x="34" y="88" width="72" height="54" rx="18" fill="#D97706"/><path d="M40 90 Q70 82 100 90 L106 144 Q70 150 34 144 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/><polygon points="65,92 75,92 78,132 70,140 62,132" fill="#DC2626"/><rect x="44" y="140" width="52" height="24" rx="8" fill="#DC2626"/><circle cx="70" cy="58" r="32" fill="#F6C39E"/><circle cx="46" cy="34" r="15" fill="#4A2511"/><circle cx="70" cy="26" r="18" fill="#4A2511"/><circle cx="94" cy="34" r="15" fill="#4A2511"/><ellipse cx="56" cy="58" rx="7" ry="8" fill="#FFFFFF"/><circle cx="57" cy="58" r="5" fill="#1E1B4B"/><ellipse cx="84" cy="58" rx="7" ry="8" fill="#FFFFFF"/><circle cx="83" cy="58" r="5" fill="#1E1B4B"/><path d="M58 72 Q70 82 82 72 Z" fill="#991B1B"/></svg>`,
+                girl_student: `<svg viewBox="0 0 140 175" class="w-full h-full"><ellipse cx="70" cy="166" rx="38" ry="7" fill="rgba(0,0,0,0.3)"/><path d="M30 50 Q18 100 32 136 L108 136 Q122 100 110 50 Z" fill="#4A2511"/><path d="M40 90 Q70 82 100 90 L104 138 Q70 144 36 138 Z" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/><polygon points="65,92 75,92 77,128 70,134 63,128" fill="#E11D48"/><path d="M36 136 L104 136 L112 162 L28 162 Z" fill="#E11D48"/><path d="M38 24 Q55 12 66 28 Q50 36 38 24 Z" fill="#E11D48"/><path d="M102 24 Q85 12 74 28 Q90 36 102 24 Z" fill="#E11D48"/><circle cx="70" cy="58" r="31" fill="#FAD0B4"/><path d="M38 48 C42 24, 98 24, 102 48 C88 34, 52 34, 38 48 Z" fill="#4A2511"/><ellipse cx="56" cy="58" rx="7" ry="8" fill="#FFFFFF"/><circle cx="57" cy="58" r="5" fill="#291811"/><ellipse cx="84" cy="58" rx="7" ry="8" fill="#FFFFFF"/><circle cx="83" cy="58" r="5" fill="#291811"/><path d="M58 73 Q70 82 82 73" stroke="#991B1B" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`,
+                pakguru: `<svg viewBox="0 0 140 175" class="w-full h-full"><ellipse cx="70" cy="166" rx="38" ry="7" fill="rgba(0,0,0,0.3)"/><path d="M34 88 Q70 80 106 88 L112 160 L28 160 Z" fill="#FDE68A" stroke="#D97706" stroke-width="2"/><polygon points="65,88 75,88 78,142 70,150 62,142" fill="#0284C7"/><circle cx="70" cy="56" r="31" fill="#F6C39E"/><path d="M38 46 C38 18, 102 18, 102 46 C90 30, 50 30, 38 46 Z" fill="#27160E"/><rect x="44" y="46" width="22" height="16" rx="4" fill="none" stroke="#1E293B" stroke-width="3.5"/><rect x="74" y="46" width="22" height="16" rx="4" fill="none" stroke="#1E293B" stroke-width="3.5"/><line x1="66" y1="54" x2="74" y2="54" stroke="#1E293B" stroke-width="3.5"/><circle cx="55" cy="54" r="4" fill="#1E293B"/><circle cx="85" cy="54" r="4" fill="#1E293B"/><path d="M56 71 Q70 80 84 71" stroke="#7C2D12" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`,
+                buguru: `<svg viewBox="0 0 140 175" class="w-full h-full"><ellipse cx="70" cy="166" rx="38" ry="7" fill="rgba(0,0,0,0.3)"/><path d="M28 48 Q16 105 30 146 L110 146 Q124 105 112 48 Z" fill="#5D3A22"/><path d="M36 88 Q70 80 104 88 L110 160 L30 160 Z" fill="#FDE68A" stroke="#B45309" stroke-width="2.5"/><polygon points="62,88 78,88 70,115" fill="#10B981"/><circle cx="70" cy="56" r="30" fill="#FAD0B4"/><path d="M38 46 C42 20, 98 20, 102 46 C86 32, 54 32, 38 46 Z" fill="#5D3A22"/><ellipse cx="56" cy="56" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="57" cy="56" r="4.5" fill="#291811"/><ellipse cx="84" cy="56" rx="6.5" ry="7.5" fill="#FFFFFF"/><circle cx="83" cy="56" r="4.5" fill="#291811"/><path d="M58 71 Q70 79 82 71" stroke="#BE123C" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`
+            };
+            return `<div data-char-key="${resolvedType}" class="${sizeClass} animate-float select-none drop-shadow-xl">${svgs[resolvedType] || svgs.boy_student}</div>`;
+        }
+
+        function selectPlayerCharacter(gender) {
+            state.playerGender = gender;
+            playSoundEffect('click');
+            updateTopHudPlayerBadge();
+            goToSlide(1);
+            showToast(`Karakter ${gender === 'boy' ? 'Laki-laki' : 'Perempuan'} dipilih!`, gender === 'boy' ? '👦' : '👧');
+        }
+
+        function startAdventureFromHome() {
+            const nameInput = document.getElementById('home-player-name-input');
+            if (nameInput && nameInput.value.trim()) {
+                state.playerName = nameInput.value.trim();
+            }
+            if (!state.playerName || state.playerName.trim() === "") {
+                showToast("Silakan ketik namamu terlebih dahulu!", "✏️");
+                return;
+            }
+            updateTopHudPlayerBadge();
+            playSoundEffect('fanfare');
+            goToSlide(2);
+        }
+
+        /* ==============================================================
+           VIDEO PENGANTAR STAGE 1 (SLIDE 3) - MP4 + 60FPS CANVAS
+        ============================================================== */
+        let introAnimFrameId = null;
+        let introStartTime = 0;
+        let introPausedElapsed = 0;
+        const INTRO_DURATION_MS = 10000;
+
+        function getIntroSubtitleText() {
+            const steps = [
+                "Klik tombol ▶ untuk memutar Video Pengantar dari Pak Guru & Bu Guru!",
+                "👋 (00:00–00:02) Pak Guru: \"Halo anak-anak!\"",
+                "☝️ (00:02–00:04) Bu Guru: \"Bagaimana suara bisa terbentuk?\"",
+                "🌊 (00:04–00:07) Bu Guru: \"Suara itu terjadi karena adanya getaran.\"",
+                "👂 (00:07–00:10) Pak Guru: \"Getaran itu lalu merambat sampai ke telinga kita!\""
+            ];
+            return steps[state.videoIntroStep] || steps[0];
+        }
+
+        function initSlide3VideoPlayer() {
+            const vid = document.getElementById('stage1-intro-video');
+            if (vid) {
+                if (state.customVideoBlobUrl) {
+                    vid.src = state.customVideoBlobUrl;
+                }
+                vid.onloadeddata = () => {
+                    if (vid.videoWidth > 0) {
+                        state.videoNativeAvailable = true;
+                        vid.classList.remove('hidden');
+                        const badge = document.getElementById('slide3-video-status-badge');
+                        if (badge) badge.innerText = "🎬 MP4 Asli Aktif";
+                    }
+                };
+                vid.ontimeupdate = () => {
+                    if (!vid.duration) return;
+                    const t = vid.currentTime;
+                    state.videoIntroProgress = Math.min(100, (t / vid.duration) * 100);
+                    state.videoIntroStep = t < 2 ? 1 : t < 4 ? 2 : t < 7 ? 3 : 4;
+                    updateSlide3VideoHUD(t);
+                };
+                vid.onended = () => {
+                    state.videoIntroPlaying = false;
+                    state.videoIntroProgress = 100;
+                    state.videoIntroStep = 0;
+                    updateSlide3VideoHUD(10);
+                    const ov = document.getElementById('intro-big-play-overlay');
+                    if (ov) ov.classList.remove('hidden');
+                };
+            }
+            drawStage1CanvasFrame(introPausedElapsed);
+        }
+
+        function handleUploadLocalIntroVideo(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            state.customVideoBlobUrl = URL.createObjectURL(file);
+            state.videoNativeAvailable = true;
+            showToast("File Video Pengantar MP4 berhasil dimuat!", "🎬");
+            goToSlide(3);
+            setTimeout(() => togglePlayStage1Video(), 150);
+        }
+
+        function updateSlide3VideoHUD(secElapsed) {
+            const fill = document.getElementById('intro-progress-fill');
+            const tm = document.getElementById('intro-time-label');
+            const sub = document.getElementById('intro-subtitle-bar');
+            const iconBtn = document.getElementById('btn-video-ctrl-icon');
+            const mainBtn = document.getElementById('btn-video-main-action');
+            if (fill) fill.style.width = `${state.videoIntroProgress}%`;
+            if (tm) {
+                const s = Math.min(10, Math.floor(secElapsed));
+                tm.innerText = `00:${s < 10 ? '0' + s : s} / 00:10`;
+            }
+            if (sub) sub.innerText = getIntroSubtitleText();
+            if (iconBtn) iconBtn.innerText = state.videoIntroPlaying ? '⏸' : '▶';
+            if (mainBtn) mainBtn.innerHTML = `🔊 ${state.videoIntroPlaying ? 'Jeda Video' : 'Putar Video Pengantar'}`;
+        }
+
+        function stopStage1Video() {
+            if (introAnimFrameId) cancelAnimationFrame(introAnimFrameId);
+            state.videoIntroPlaying = false;
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            const vid = document.getElementById('stage1-intro-video');
+            if (vid && !vid.paused) vid.pause();
+        }
+
+        function seekStage1Video(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+            introPausedElapsed = ratio * INTRO_DURATION_MS;
+            state.videoIntroProgress = ratio * 100;
+            const sec = introPausedElapsed / 1000;
+            state.videoIntroStep = sec < 2 ? 1 : sec < 4 ? 2 : sec < 7 ? 3 : 4;
+            drawStage1CanvasFrame(introPausedElapsed);
+            updateSlide3VideoHUD(sec);
+        }
+
+        function togglePlayStage1Video() {
+            const vid = document.getElementById('stage1-intro-video');
+            if (vid && state.videoNativeAvailable && vid.readyState >= 2) {
+                vid.classList.remove('hidden');
+                if (!vid.paused) {
+                    vid.pause();
+                    state.videoIntroPlaying = false;
+                    updateSlide3VideoHUD(vid.currentTime);
+                    return;
+                }
+                vid.play().then(() => {
+                    state.videoIntroPlaying = true;
+                    const ov = document.getElementById('intro-big-play-overlay');
+                    if (ov) ov.classList.add('hidden');
+                    awardTaskStar(1, 's3_video', 1);
+                    updateSlide3VideoHUD(vid.currentTime);
+                }).catch(() => {
+                    state.videoNativeAvailable = false;
+                    toggleCanvas60fpsVideo();
+                });
+                return;
+            }
+            toggleCanvas60fpsVideo();
+        }
+
+        function toggleCanvas60fpsVideo() {
+            if (state.videoIntroPlaying) {
+                stopStage1Video();
+                const ov = document.getElementById('intro-big-play-overlay');
+                if (ov) ov.classList.remove('hidden');
+                updateSlide3VideoHUD(introPausedElapsed / 1000);
+                return;
+            }
+            if (introPausedElapsed >= INTRO_DURATION_MS) introPausedElapsed = 0;
+            state.videoIntroPlaying = true;
+            awardTaskStar(1, 's3_video', 1);
+            const ov = document.getElementById('intro-big-play-overlay');
+            if (ov) ov.classList.add('hidden');
+
+            speakIndonesianNarration("Halo anak-anak! Bagaimana suara bisa terbentuk? Suara itu terjadi karena adanya getaran. Getaran itu lalu merambat sampai ke telinga kita!");
+
+            introStartTime = performance.now() - introPausedElapsed;
+            let lastStep = 0;
+
+            const stepLoop = (now) => {
+                if (!state.videoIntroPlaying || state.currentSlide !== 3) return;
+                const elapsed = now - introStartTime;
+                introPausedElapsed = elapsed;
+                const sec = elapsed / 1000;
+                state.videoIntroProgress = Math.min(100, (elapsed / INTRO_DURATION_MS) * 100);
+                state.videoIntroStep = sec < 2.2 ? 1 : sec < 4.2 ? 2 : sec < 7.2 ? 3 : 4;
+
+                if (state.videoIntroStep !== lastStep) {
+                    lastStep = state.videoIntroStep;
+                    if (lastStep === 3) playSoundEffect('flute');
+                    if (lastStep === 4) playSoundEffect('bell');
+                }
+
+                drawStage1CanvasFrame(elapsed);
+                updateSlide3VideoHUD(sec);
+
+                if (elapsed < INTRO_DURATION_MS) {
+                    introAnimFrameId = requestAnimationFrame(stepLoop);
+                } else {
+                    state.videoIntroPlaying = false;
+                    introPausedElapsed = 0;
+                    state.videoIntroProgress = 100;
+                    state.videoIntroStep = 0;
+                    updateSlide3VideoHUD(10);
+                    const playOv = document.getElementById('intro-big-play-overlay');
+                    if (playOv) playOv.classList.remove('hidden');
+                    showToast("Video Pengantar selesai! Klik 'Ayo Menjelajah!' untuk lanjut.", "🎬");
+                }
+            };
+            introAnimFrameId = requestAnimationFrame(stepLoop);
+        }
+
+        function fillRoundedRectSafe(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function drawStage1CanvasFrame(elapsedMs = 0) {
+            const canvas = document.getElementById('stage1-video-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+            const W = canvas.width;
+            const H = canvas.height;
+            const t = elapsedMs / 1000;
+            const shot = t > 4.2 && t < 7.2 ? 3 : t >= 7.2 ? 4 : t >= 2.2 ? 2 : 1;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Latar Dinding & Papan Tulis Hijau
+            ctx.fillStyle = '#C9B79C';
+            ctx.fillRect(0, 0, W, H);
+            ctx.fillStyle = '#8D6239';
+            ctx.fillRect(48, 26, W - 96, H - 86);
+            ctx.fillStyle = '#2E5A44';
+            ctx.fillRect(62, 40, W - 124, H - 114);
+
+            // Ilustrasi Kapur
+            ctx.strokeStyle = 'rgba(167, 243, 208, 0.45)';
+            ctx.fillStyle = 'rgba(167, 243, 208, 0.45)';
+            ctx.lineWidth = 3;
+            ctx.font = 'italic 24px sans-serif';
+            ctx.fillText('Meningkatkan', 92, 92);
+            ctx.beginPath();
+            ctx.moveTo(92, 105); ctx.lineTo(245, 105);
+            ctx.moveTo(310, 95); ctx.lineTo(310, 210); ctx.lineTo(460, 210);
+            ctx.stroke();
+
+            if (shot === 3) {
+                // Shot 3 (04-07s): Close-up Samping Bu Guru + Gelombang Suara Neon Multi-Warna
+                const colors = ['#5EEAD4', '#F472B6', '#FEF08A', '#A78BFA'];
+                colors.forEach((col, idx) => {
+                    ctx.beginPath();
+                    ctx.strokeStyle = col;
+                    ctx.lineWidth = 6 - idx;
+                    for (let x = 75; x <= 560; x += 8) {
+                        const env = Math.sin(((x - 75) / 485) * Math.PI);
+                        const amp = (52 - idx * 8) * env * Math.sin(t * 14 + idx);
+                        const y = 265 + Math.sin(x * 0.045 - t * 18 + idx) * amp;
+                        if (x === 75) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                });
+
+                const bx = 660, by = 275 + Math.sin(t * 5) * 4;
+                ctx.fillStyle = '#D5B895';
+                fillRoundedRectSafe(ctx, bx - 90, by + 90, 180, 145, 40);
+                ctx.fill();
+                ctx.fillStyle = '#5D3A22';
+                ctx.beginPath(); ctx.arc(bx + 18, by - 10, 92, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#FAD0B4';
+                ctx.beginPath(); ctx.arc(bx - 12, by + 5, 74, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath(); ctx.ellipse(bx - 42, by - 8, 13, 16, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#3E2723';
+                ctx.beginPath(); ctx.arc(bx - 45, by - 8, 9, 0, Math.PI * 2); ctx.fill();
+                const mouthOpen = 9 + Math.abs(Math.sin(t * 12)) * 11;
+                ctx.fillStyle = '#7F1D1D';
+                ctx.beginPath(); ctx.ellipse(bx - 66, by + 34, 13, mouthOpen, 0, 0, Math.PI * 2); ctx.fill();
+                return;
+            }
+
+            if (shot === 4) {
+                for (let r = 1; r <= 5; r++) {
+                    const rad = ((t * 90 + r * 38) % 210) + 20;
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(110, 231, 183, ${1 - rad / 240})`;
+                    ctx.lineWidth = 4;
+                    ctx.arc(W / 2, 215, rad, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+
+            const drawTeacher = (cx, cy, isMale) => {
+                const y = cy + Math.sin(t * 4.5 + (isMale ? 0 : 1.5)) * 4;
+                if (!isMale) {
+                    ctx.fillStyle = '#5D3A22';
+                    fillRoundedRectSafe(ctx, cx - 84, y - 78, 168, 170, 52);
+                    ctx.fill();
+                }
+                ctx.fillStyle = '#D5B895';
+                ctx.strokeStyle = '#8C6D46';
+                ctx.lineWidth = 4;
+                fillRoundedRectSafe(ctx, cx - 78, y + 66, 156, 150, 34);
+                ctx.fill(); ctx.stroke();
+
+                ctx.fillStyle = isMale ? '#27272A' : '#8C6D46';
+                ctx.beginPath();
+                ctx.moveTo(cx - 12, y + 68); ctx.lineTo(cx + 12, y + 68);
+                ctx.lineTo(cx + 15, y + 142); ctx.lineTo(cx, y + 156); ctx.lineTo(cx - 15, y + 142);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = isMale ? '#F6C39E' : '#FAD0B4';
+                ctx.beginPath(); ctx.arc(cx, y, 65, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = isMale ? '#3B2314' : '#5D3A22';
+                ctx.beginPath(); ctx.arc(cx, y - 20, 65, Math.PI, Math.PI * 2); ctx.fill();
+
+                [-25, 25].forEach(ox => {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath(); ctx.ellipse(cx + ox, y - 2, 13, 15, 0, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#27160E';
+                    ctx.beginPath(); ctx.arc(cx + ox, y - 2, 8.5, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath(); ctx.arc(cx + ox - 3, y - 5, 3, 0, Math.PI * 2); ctx.fill();
+                });
+
+                if (isMale) {
+                    ctx.strokeStyle = '#27160E';
+                    ctx.lineWidth = 5.5;
+                    ctx.strokeRect(cx - 48, y - 20, 42, 32);
+                    ctx.strokeRect(cx + 6, y - 20, 42, 32);
+                    ctx.beginPath(); ctx.moveTo(cx - 6, y - 4); ctx.lineTo(cx + 6, y - 4); ctx.stroke();
+                }
+
+                const isSpeaking = (isMale && (shot === 1 || shot === 4)) || (!isMale && shot === 2);
+                const mH = isSpeaking && state.videoIntroPlaying ? 6 + Math.abs(Math.sin(t * 14)) * 9 : 5;
+                ctx.fillStyle = '#7F1D1D';
+                ctx.beginPath(); ctx.ellipse(cx, y + 30, 15, mH, 0, 0, Math.PI * 2); ctx.fill();
+            };
+
+            drawTeacher(310, 275, true);
+            drawTeacher(650, 280, false);
+        }
+
+        /* ==============================================================
+           SLIDE RENDERING (SLIDE 1 TO 21)
+        ============================================================== */
+        function goToSlide(num) {
+            stopStage1Video();
+            playSoundEffect('click');
+            state.currentSlide = num;
+            const m = slideMeta[num];
+            renderEnvironmentBackground(num);
+            updateTopHudPlayerBadge();
+
+            const topHud = document.getElementById('top-hud');
+            const badgeWrap = document.getElementById('stage-header-badge');
+            const numCircle = document.getElementById('stage-number-circle');
+            const titleWood = document.getElementById('stage-title-wood');
+            const themeWood = document.getElementById('stage-theme-wood');
+            const activityWrap = document.getElementById('activity-banner-wrap');
+            const activityBanner = document.getElementById('activity-banner');
+            const bottomNav = document.getElementById('bottom-nav');
+
+            if (num === 1) {
+                topHud.classList.add('hidden');
+                activityWrap.classList.add('hidden');
+                bottomNav.classList.add('hidden');
+            } else if (num === 2) {
+                topHud.classList.remove('hidden');
+                badgeWrap.classList.add('hidden');
+                themeWood.innerText = "Ekspedisi Rahasia Dunia Bunyi";
+                activityWrap.classList.add('hidden');
+                bottomNav.classList.add('hidden');
+            } else {
+                topHud.classList.remove('hidden');
+                badgeWrap.classList.remove('hidden');
+                badgeWrap.classList.add('flex');
+                numCircle.style.backgroundColor = m.color;
+                numCircle.innerText = m.stage;
+                titleWood.innerText = `STAGE ${m.stage} • ${m.stageName}`;
+                themeWood.innerText = m.theme;
+                activityWrap.classList.remove('hidden');
+                activityBanner.innerText = m.activity;
+                bottomNav.classList.remove('hidden');
+
+                const [curStep, totalStep] = m.step;
+                let dotsHtml = '';
+                for (let i = 1; i <= totalStep; i++) {
+                    dotsHtml += `<span class="w-3 h-3 rounded-full ${i === curStep ? 'bg-amber-400 scale-125 shadow' : 'bg-amber-950/60 border border-amber-400/50'}"></span>`;
+                }
+                document.getElementById('progress-dots').innerHTML = dotsHtml;
+                document.getElementById('progress-fraction').innerText = `${curStep}/${totalStep}`;
+                document.getElementById('slide-counter-badge').innerText = `Slide ${num}/21`;
+                document.getElementById('btn-next-label').innerText = (m.next === 2) ? 'Ke Peta' : 'Lanjut';
+            }
+
+            const container = document.getElementById('slide-container');
+            if (container) container.innerHTML = getSlideHTML(num);
+            if (num === 3) initSlide3VideoPlayer();
+        }
+
+        function handlePrevSlide() {
+            const m = slideMeta[state.currentSlide];
+            if (m && m.prev) goToSlide(m.prev);
+        }
+
+        function handleNextSlide() {
+            const m = slideMeta[state.currentSlide];
+            if (m && m.next) goToSlide(m.next);
+        }
+
+        function getSlideHTML(num) {
+            switch (num) {
+                case 1:
+                    return `
+                    <div class="w-full h-full flex flex-col justify-between py-2 relative">
+                        <div class="flex items-start justify-between px-2">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="wood-panel px-3 py-1 rounded-xl font-game text-xs font-bold text-emerald-300">🌿 IPAS</span>
+                                <span class="wood-panel px-3 py-1 rounded-xl font-game text-xs font-bold text-sky-300">📖 Bahasa Indonesia</span>
+                                <span class="wood-panel px-3 py-1 rounded-xl font-game text-xs font-bold text-amber-300">🎵 Seni Musik</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openInfoModal('petunjuk')" class="btn-3d-green px-3 py-1.5 rounded-xl font-game text-xs text-white flex items-center gap-1">📖 Info & Panduan</button>
+                                <button onclick="openSettingsAuthModal()" class="btn-3d-blue px-3 py-1.5 rounded-xl font-game text-xs text-white flex items-center gap-1">⚙️ Pengaturan</button>
+                                <button onclick="toggleMute()" class="btn-3d-orange w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm">${state.soundEnabled ? '🔊' : '🔇'}</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center gap-4 my-auto px-2">
+                            <div class="hidden md:flex flex-col items-center">${getCharacterSVG('pakguru', 'w-28 h-36')}<span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-2">Pak Guru</span></div>
+                            <div class="max-w-xl w-full flex flex-col items-center text-center space-y-2">
+                                <div class="wood-panel px-6 py-2.5 rounded-3xl border-4 border-amber-400 shadow-2xl">
+                                    <div class="text-[11px] font-bold tracking-widest text-amber-300 uppercase">🏮 MULTIMEDIA PEMBELAJARAN INTERAKTIF 🏮</div>
+                                    <h1 class="font-game text-3xl sm:text-5xl font-extrabold text-white tracking-wider drop-shadow-[0_4px_4px_rgba(0,0,0,0.6)]">LENTERA</h1>
+                                    <div class="font-game text-base sm:text-xl text-amber-300 font-bold">Petualangan Bunyi</div>
+                                    <p class="text-[10px] sm:text-xs text-amber-100/90 mt-0.5">Lintas Eksplorasi, Narasi, Tematik, Edukasi, Ritme, dan Alam</p>
+                                </div>
+
+                                <div class="parchment-panel px-5 py-3 rounded-3xl w-full space-y-2.5">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <span class="px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-700/40 font-game font-bold text-xs text-amber-900">Dunia Bunyi Menantimu! • ${state.className}</span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm font-bold text-amber-950">"Selamat datang! Masukkan namamu dan pilih karaktermu untuk memulai ekspedisi."</p>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <label class="text-xs font-extrabold uppercase text-amber-900">Nama Pemain:</label>
+                                        <input id="home-player-name-input" type="text" value="${state.playerName}" oninput="state.playerName = this.value; updateTopHudPlayerBadge();" placeholder="Ketik namamu..." class="px-4 py-1.5 rounded-xl border-2 border-amber-600 bg-white font-bold text-amber-950 text-xs sm:text-sm text-center w-52 shadow-inner">
+                                    </div>
+                                    <!-- PEMILIHAN KARAKTER: CUKUP TULISAN LAKI-LAKI DAN PEREMPUAN TANPA DESKRIPSI TAMBAHAN -->
+                                    <div class="grid grid-cols-2 gap-3 max-w-xs mx-auto pt-1">
+                                        <div onclick="selectPlayerCharacter('boy')" class="cursor-pointer rounded-2xl p-2 border-4 transition-all flex flex-col items-center justify-center gap-1 ${state.playerGender === 'boy' ? 'bg-sky-100 border-sky-600 ring-4 ring-sky-400/60 scale-[1.03] shadow-lg' : 'bg-white/85 border-amber-400 opacity-85 hover:opacity-100'}">
+                                            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-sky-600 shadow bg-sky-50">
+                                                ${getHalfBodyAvatarSVG('boy')}
+                                            </div>
+                                            <div class="font-game font-bold text-xs sm:text-sm text-amber-950">Laki-laki</div>
+                                        </div>
+                                        <div onclick="selectPlayerCharacter('girl')" class="cursor-pointer rounded-2xl p-2 border-4 transition-all flex flex-col items-center justify-center gap-1 ${state.playerGender === 'girl' ? 'bg-rose-100 border-rose-600 ring-4 ring-rose-400/60 scale-[1.03] shadow-lg' : 'bg-white/85 border-amber-400 opacity-85 hover:opacity-100'}">
+                                            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-rose-600 shadow bg-rose-50">
+                                                ${getHalfBodyAvatarSVG('girl')}
+                                            </div>
+                                            <div class="font-game font-bold text-xs sm:text-sm text-amber-950">Perempuan</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="startAdventureFromHome()" class="btn-3d-orange px-8 py-2.5 rounded-full font-game font-bold text-base sm:text-lg text-white tracking-wide flex items-center gap-2">
+                                    🚀 Mulai Petualangan
+                                </button>
+                            </div>
+                            <div class="hidden md:flex flex-col items-center">${getCharacterSVG('buguru', 'w-28 h-36')}<span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-2">Bu Guru</span></div>
+                        </div>
+                    </div>`;
+
+                case 2:
+                    const mapIslands = [
+                        {
+                            id: 1, slide: 3, name: "Sound Gate", sub: "Gerbang Misteri Suara",
+                            badgeColor: "#2E7D32", posClass: "left-[8%] top-[20%]",
+                            emblemSvg: `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="46" fill="#0369A1"/><path d="M22 78 L22 44 C22 24, 78 24, 78 44 L78 78" fill="none" stroke="#CBD5E1" stroke-width="9" stroke-linecap="round"/><path d="M30 54 L38 42 L45 64 L52 36 L59 62 L66 46 L72 54" stroke="#FEF08A" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="50" cy="20" r="6" fill="#FACC15"/></svg>`
+                        },
+                        {
+                            id: 2, slide: 6, name: "Sonic Safari", sub: "Berburu Jejak Bunyi",
+                            badgeColor: "#EF6C00", posClass: "left-[42%] top-[12%]",
+                            emblemSvg: `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="46" fill="#065F46"/><circle cx="28" cy="42" r="18" fill="#22C55E"/><circle cx="72" cy="40" r="18" fill="#16A34A"/><rect x="38" y="28" width="24" height="54" rx="6" fill="#38BDF8"/><ellipse cx="50" cy="80" rx="26" ry="7" fill="#BAE6FD"/></svg>`
+                        },
+                        {
+                            id: 3, slide: 10, name: "Sonic Lab", sub: "Laboratorium Rahasia Bunyi",
+                            badgeColor: "#0277BD", posClass: "right-[8%] top-[20%]",
+                            emblemSvg: `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="46" fill="#1E3A8A"/><path d="M24 68 C24 34, 76 34, 76 68 Z" fill="#38BDF8" fill-opacity="0.35" stroke="#FBBF24" stroke-width="4"/><rect x="20" y="68" width="60" height="12" rx="4" fill="#92400E" stroke="#FDE68A" stroke-width="2"/><text x="50" y="62" text-anchor="middle" fill="#FEF08A" font-size="30" font-weight="bold">♫</text></svg>`
+                        },
+                        {
+                            id: 4, slide: 14, name: "Sonic Arena", sub: "Duel Para Detektif",
+                            badgeColor: "#6A1B9A", posClass: "left-[24%] bottom-[8%]",
+                            emblemSvg: `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="46" fill="#3B0764"/><rect x="24" y="42" width="52" height="32" rx="4" fill="#D97706" stroke="#FEF08A" stroke-width="2.5"/><rect x="30" y="48" width="8" height="16" rx="3" fill="#3B0764"/><rect x="46" y="48" width="8" height="16" rx="3" fill="#3B0764"/><rect x="62" y="48" width="8" height="16" rx="3" fill="#3B0764"/><circle cx="26" cy="30" r="7" fill="#F97316"/><circle cx="74" cy="30" r="7" fill="#F97316"/></svg>`
+                        },
+                        {
+                            id: 5, slide: 18, name: "Sonic Expo", sub: "Panggung Kreasi Ilmuwan",
+                            badgeColor: "#C62828", posClass: "right-[18%] bottom-[8%]",
+                            emblemSvg: `<svg viewBox="0 0 100 100" class="w-full h-full"><circle cx="50" cy="50" r="46" fill="#881337"/><polygon points="22,40 50,22 78,40" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/><rect x="26" y="40" width="48" height="32" rx="4" fill="#B45309" stroke="#FDE047" stroke-width="2.5"/><text x="50" y="64" text-anchor="middle" fill="#FEF08A" font-size="26" font-weight="bold">★</text></svg>`
+                        }
+                    ];
+                    return `
+                    <div class="w-full h-full relative select-none overflow-hidden">
+                        <!-- TULISAN "PETA PETUALANGAN" BERSIH TANPA BALON ATAU KOTAK TEKS -->
+                        <div class="absolute left-4 top-0.5 z-30 pointer-events-none">
+                            <h2 class="font-game text-2xl sm:text-3xl font-extrabold text-white tracking-wide drop-shadow-[0_4px_6px_rgba(0,0,0,0.85)]">
+                                Peta Petualangan
+                            </h2>
+                        </div>
+
+                        <!-- 5 GATE PETUALANGAN DENGAN LOGO LINGKARAN VISUAL TEMA PROPORSIONAL -->
+                        ${mapIslands.map(isl => {
+                            const sc = state.stageStars[isl.id] || 0;
+                            const mc = state.stageMaxStars[isl.id] || 5;
+                            let starsIcons = '';
+                            for (let s = 1; s <= mc; s++) {
+                                starsIcons += `<span class="${s <= sc ? 'text-amber-400' : 'text-slate-400/70'} text-[11px]">★</span>`;
+                            }
+                            return `
+                            <div onclick="goToSlide(${isl.slide})" class="absolute ${isl.posClass} z-20 cursor-pointer group flex flex-col items-center hover:scale-105 transition-transform duration-200 w-36 sm:w-44">
+                                <div class="relative">
+                                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-amber-300 shadow-[0_6px_15px_rgba(0,0,0,0.6)] overflow-hidden bg-slate-900 flex items-center justify-center group-hover:ring-4 group-hover:ring-sky-300 transition">
+                                        ${isl.emblemSvg}
+                                    </div>
+                                    <span style="background:${isl.badgeColor}" class="absolute -top-1 -left-1 w-7 h-7 rounded-full border-2 border-white text-white font-game font-extrabold text-xs flex items-center justify-center shadow-md">
+                                        ${isl.id}
+                                    </span>
+                                </div>
+                                <div class="wood-sign-3d px-2.5 py-0.5 rounded-xl text-center -mt-2 z-10 w-full">
+                                    <div class="font-game font-extrabold text-xs sm:text-sm text-white leading-tight">${isl.name}</div>
+                                    <div class="text-[9px] sm:text-[10px] font-bold text-amber-200 truncate">${isl.sub}</div>
+                                </div>
+                                <div class="star-pill-3d -mt-1 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 z-20">
+                                    <span class="font-game font-extrabold text-white text-[10px]">${sc}/${mc}</span>
+                                    <div class="flex items-center gap-0.5">${starsIcons}</div>
+                                </div>
+                            </div>`;
+                        }).join('')}
+                    </div>`;
+
+                case 3:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="hidden lg:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('pakguru', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">Pak Guru</span>
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-3 sm:p-4 space-y-2 text-center">
+                            <div class="flex flex-wrap items-center justify-between gap-2 bg-sky-100 border-2 border-sky-600 rounded-2xl py-1 px-3 text-xs font-bold text-sky-950">
+                                <span>🎬 <b>Video Pengantar dari Guru:</b> "Halo, anak-anak! Bagaimana suara bisa terbentuk?"</span>
+                                <label class="cursor-pointer bg-amber-500 hover:bg-amber-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-game">
+                                    📂 Muat File MP4
+                                    <input type="file" accept="video/mp4,video/*" class="hidden" onchange="handleUploadLocalIntroVideo(this)">
+                                </label>
+                            </div>
+
+                            <div class="bg-slate-900 border-4 border-amber-700 rounded-2xl h-52 sm:h-60 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+                                <video id="stage1-intro-video" class="absolute inset-0 w-full h-full object-cover z-20 hidden" playsinline preload="auto">
+                                    <source src="Video Pengantar dari Guru.mp4" type="video/mp4">
+                                    <source src="./Video Pengantar dari Guru.mp4" type="video/mp4">
+                                </video>
+                                <canvas id="stage1-video-canvas" width="960" height="540" class="w-full h-full object-cover relative z-10"></canvas>
+
+                                <div id="intro-big-play-overlay" onclick="togglePlayStage1Video()" class="cursor-pointer absolute inset-0 z-30 flex items-center justify-center bg-black/15 hover:bg-black/5 transition ${state.videoIntroPlaying ? 'hidden' : 'flex'}">
+                                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-sky-600/85 border-4 border-white flex items-center justify-center shadow-[0_0_30px_rgba(56,189,248,0.95)] hover:scale-110 transition">
+                                        <span class="text-white text-3xl sm:text-4xl ml-1">▶</span>
+                                    </div>
+                                </div>
+
+                                <div id="intro-subtitle-bar" class="absolute bottom-9 inset-x-4 z-30 bg-black/80 text-amber-200 font-bold text-xs sm:text-sm py-1 px-3 rounded-xl mx-auto max-w-xl border border-amber-400/50 pointer-events-none">
+                                    ${getIntroSubtitleText()}
+                                </div>
+
+                                <div class="relative z-30 bg-black/85 px-3 py-1.5 flex items-center gap-3 text-white text-xs">
+                                    <button onclick="togglePlayStage1Video()" id="btn-video-ctrl-icon" class="font-bold hover:text-amber-300 text-sm">${state.videoIntroPlaying ? '⏸' : '▶'}</button>
+                                    <div class="flex-1 h-2 bg-white/30 rounded-full overflow-hidden cursor-pointer" onclick="seekStage1Video(event)">
+                                        <div id="intro-progress-fill" class="h-full bg-sky-400 transition-all duration-100" style="width: ${state.videoIntroProgress}%"></div>
+                                    </div>
+                                    <span id="intro-time-label" class="font-mono text-[11px]">00:00 / 00:10</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="togglePlayStage1Video()" id="btn-video-main-action" class="btn-3d-blue px-5 py-1.5 rounded-full font-game font-bold text-white text-xs sm:text-sm">
+                                    🔊 ${state.videoIntroPlaying ? 'Jeda Video' : 'Putar Video Pengantar'}
+                                </button>
+                                <button onclick="stopStage1Video(); awardTaskStar(1, 's3_video', 1); goToSlide(4)" class="btn-3d-orange px-6 py-1.5 rounded-full font-game font-bold text-white text-xs sm:text-sm">
+                                    🚀 Ayo Menjelajah! ▶
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hidden lg:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('buguru', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">Bu Guru</span>
+                        </div>
+                    </div>`;
+
+                case 4:
+                    const s4Items = [
+                        { key: 'bel', name: 'Bel Sekolah', sound: 'bell' },
+                        { key: 'burung', name: 'Kicauan Burung', sound: 'bird' },
+                        { key: 'kendaraan', name: 'Kendaraan', sound: 'drum' },
+                        { key: 'gitar', name: 'Gitar', sound: 'guitar' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="hidden md:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('player', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">${state.playerName}</span>
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5">
+                            <p class="text-xs sm:text-sm font-bold text-amber-950 bg-amber-200/70 px-3 py-1.5 rounded-xl border border-amber-600/30">
+                                🌅 "Pagi hari, <b>${state.playerName}</b> mendengar bel sekolah, kicauan burung, suara kendaraan, dan gitar. Mengapa bunyinya berbeda?"
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                ${s4Items.map(it => `
+                                <div onclick="playSoundEffect('${it.sound}')" class="cursor-pointer bg-white hover:bg-amber-50 border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center justify-between h-32 shadow-sm transition">
+                                    ${renderItemVisualBox(it.key, it.name)}
+                                    <div class="text-xs font-extrabold text-amber-950">${it.name}</div>
+                                    <span class="text-[10px] font-bold text-sky-700">🔊 Dengarkan</span>
+                                </div>`).join('')}
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-center">
+                                <div class="bg-sky-100 border border-sky-400 rounded-xl p-1.5 text-[11px] font-bold text-sky-950">❓ Apa persamaannya?</div>
+                                <div class="bg-emerald-100 border border-emerald-400 rounded-xl p-1.5 text-[11px] font-bold text-emerald-950">❓ Bagaimana bunyi dihasilkan?</div>
+                                <div class="bg-amber-100 border border-amber-400 rounded-xl p-1.5 text-[11px] font-bold text-amber-950">❓ Mengapa bunyinya berbeda?</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <input id="s4-input" type="text" value="${state.slide4Saved}" oninput="state.slide4Saved=this.value" placeholder="Tulis hasil pengamatanmu di sini..." class="flex-1 px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white text-xs font-semibold">
+                                <button onclick="awardTaskStar(1, 's4_ans', 2); showToast('Jawabanmu tersimpan! +2 Bintang Stage 1', '⭐')" class="btn-3d-orange px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs">Simpan Jawaban</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 5:
+                    const s5Objects = [
+                        { key: 'senar_gitar', name: 'Senar Gitar' },
+                        { key: 'membran_drum', name: 'Membran Drum' },
+                        { key: 'telepon_kaleng', name: 'Telepon Kaleng' },
+                        { key: 'botol_air', name: 'Botol Air Berbeda' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+                            <div class="md:col-span-5 grid grid-cols-2 gap-2">
+                                ${s5Objects.map(o => `
+                                <div class="bg-white border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center justify-between h-28 shadow-sm">
+                                    ${renderItemVisualBox(o.key, o.name)}
+                                    <span class="text-[11px] font-extrabold text-amber-950 text-center">${o.name}</span>
+                                </div>`).join('')}
+                            </div>
+                            <div class="md:col-span-7 space-y-2">
+                                <div class="font-game font-bold text-sm text-amber-950">🔬 Pertanyaan Prediksi: "Apa yang harus terjadi pada benda agar bunyi dihasilkan?"</div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    ${['Benda bergetar', 'Benda berubah warna', 'Benda diam'].map(opt => `
+                                    <button onclick="state.slide5Choice='${opt}'; goToSlide(5)" class="p-2 rounded-xl border-2 font-bold text-xs transition ${state.slide5Choice === opt ? 'bg-amber-500 text-white border-amber-900 shadow-inner' : 'bg-white text-amber-950 border-amber-400 hover:bg-amber-50'}">
+                                        ${opt}
+                                    </button>`).join('')}
+                                </div>
+                                <textarea oninput="state.slide5Reason=this.value" rows="2" placeholder="Jelaskan alasanmu..." class="w-full px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white text-xs font-semibold">${state.slide5Reason}</textarea>
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <button onclick="checkSlide5Prediction()" class="btn-3d-blue px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs">Simpan Prediksi</button>
+                                    <button onclick="awardTaskStar(1, 's5_done', 2); goToSlide(2)" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">🚀 Mulai Eksplorasi (Ke Peta)</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 6:
+                    const s6Cards = [
+                        { key: 'bel', name: 'Bel Sekolah', sound: 'bell' },
+                        { key: 'membran_drum', name: 'Drum', sound: 'drum' },
+                        { key: 'gitar', name: 'Gitar', sound: 'guitar' },
+                        { key: 'burung', name: 'Burung', sound: 'bird' },
+                        { key: 'hujan', name: 'Hujan', sound: 'rain' },
+                        { key: 'tepuk_tangan', name: 'Tepuk Tangan', sound: 'clap' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                                ${s6Cards.map(c => `
+                                <div onclick="playSoundEffect('${c.sound}'); awardTaskStar(2, 's6_play', 1);" class="cursor-pointer bg-white hover:bg-amber-50 border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center justify-between h-36 shadow-sm transition group">
+                                    ${renderItemVisualBox(c.key, c.name)}
+                                    <div class="font-game font-bold text-xs text-amber-950 text-center">${c.name}</div>
+                                    <span class="px-2.5 py-0.5 rounded-full bg-orange-500 text-white font-bold text-[10px] group-hover:scale-105 transition">▶ Putar</span>
+                                </div>`).join('')}
+                            </div>
+                            <div class="bg-amber-100 border-2 border-amber-500 rounded-2xl p-2.5 flex flex-wrap items-center justify-between gap-2">
+                                <p class="text-xs font-bold text-amber-950">🤔 Pertanyaan: "Apakah suara yang lebih keras selalu memiliki nada lebih tinggi?"</p>
+                                <button onclick="awardTaskStar(2, 's6_cmp', 1); showToast('Kuat bunyi ditentukan amplitudo, sedangkan tinggi nada ditentukan frekuensi!', '💡'); setTimeout(()=>goToSlide(7), 1600);" class="btn-3d-orange px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs">Ayo Bandingkan! ▶</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 7:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="hidden md:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('pakguru', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">Pak Guru</span>
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5 text-center">
+                            <div class="wood-panel px-4 py-2 rounded-2xl font-game font-bold text-xs sm:text-sm text-amber-200">
+                                💡 KONSEP INTI: "Bunyi dihasilkan oleh benda yang <span class="text-amber-300 underline">BERGETAR</span> dan merambat melalui <span class="text-sky-300 underline">MEDIUM</span>."
+                            </div>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div onclick="playSoundEffect('guitar')" class="cursor-pointer bg-white border-2 border-amber-500 rounded-2xl p-2.5 flex flex-col items-center justify-between h-36 ${state.slide7Anim ? 'vibrate-active ring-4 ring-amber-400' : ''}">
+                                    ${renderItemVisualBox('senar_gitar', 'Senar Gitar')}
+                                    <div class="font-game font-bold text-xs text-amber-950">Senar Gitar</div>
+                                    <span class="text-[10px] text-emerald-700 font-bold">Senar bergetar saat dipetik</span>
+                                </div>
+                                <div onclick="playSoundEffect('drum')" class="cursor-pointer bg-white border-2 border-amber-500 rounded-2xl p-2.5 flex flex-col items-center justify-between h-36 ${state.slide7Anim ? 'vibrate-active ring-4 ring-amber-400' : ''}">
+                                    ${renderItemVisualBox('membran_drum', 'Membran Drum')}
+                                    <div class="font-game font-bold text-xs text-amber-950">Membran Drum</div>
+                                    <span class="text-[10px] text-emerald-700 font-bold">Kulit membran bergetar</span>
+                                </div>
+                                <div onclick="playSoundEffect('flute')" class="cursor-pointer bg-white border-2 border-amber-500 rounded-2xl p-2.5 flex flex-col items-center justify-between h-36 ${state.slide7Anim ? 'vibrate-active ring-4 ring-amber-400' : ''}">
+                                    ${renderItemVisualBox('burung', 'Kolom Udara Seruling')}
+                                    <div class="font-game font-bold text-xs text-amber-950">Kolom Udara Seruling</div>
+                                    <span class="text-[10px] text-emerald-700 font-bold">Udara di dalam tabung bergetar</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 bg-sky-100 border-2 border-sky-400 rounded-2xl px-4 py-2">
+                                <span class="text-xs font-bold text-sky-950">❓ Bagian mana yang bergetar ketika gitar dipetik? (<b>Senar Gitar</b>)</span>
+                                <button onclick="state.slide7Anim=!state.slide7Anim; awardTaskStar(2, 's7_anim', 1); playSoundEffect('guitar'); goToSlide(7);" class="btn-3d-blue px-4 py-1.5 rounded-xl font-game font-bold text-white text-xs">
+                                    ✨ ${state.slide7Anim ? 'Hentikan Animasi' : 'Lihat Animasi!'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 8:
+                    const s8Items = [
+                        { name: 'Gajah', key: 'gajah' },
+                        { name: 'Paus', key: 'paus' },
+                        { name: 'Nada Piano', key: 'piano' },
+                        { name: 'Nyamuk', key: 'nyamuk' },
+                        { name: 'Anjing', key: 'anjing' },
+                        { name: 'Kelelawar', key: 'kelelawar' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-3">
+                        <div class="flex-1 parchment-panel rounded-3xl p-3.5 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-extrabold text-amber-950">🎯 Pilih kelompok frekuensi yang sesuai untuk setiap kartu:</span>
+                                <button onclick="checkSlide8Frequency()" class="btn-3d-orange px-4 py-1 rounded-xl font-game font-bold text-white text-xs">Periksa Jawaban</button>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                                ${s8Items.map(item => `
+                                <div class="bg-white border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center justify-between h-44 shadow-sm">
+                                    ${renderItemVisualBox(item.key, item.name)}
+                                    <div class="font-game font-bold text-xs text-amber-950">${item.name}</div>
+                                    <div class="grid grid-cols-1 gap-1 w-full">
+                                        ${['Infrasonik', 'Audiosonik', 'Ultrasonik'].map(cat => `
+                                        <button onclick="state.slide8Bins['${item.name}']='${cat}'; playSoundEffect('click'); goToSlide(8);" class="py-0.5 rounded-lg text-[10px] font-bold border ${state.slide8Bins[item.name] === cat ? 'bg-amber-600 text-white border-amber-900' : 'bg-amber-50 text-amber-900 border-amber-300'}">
+                                            ${cat}
+                                        </button>`).join('')}
+                                    </div>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 9:
+                    const s9Sounds = [
+                        { title: "Suara 1: Alunan Seruling", type: "nada", key: "Nada" },
+                        { title: "Suara 2: Desir Hujan & Angin", type: "desah", key: "Desah" },
+                        { title: "Suara 3: Dentuman Keras", type: "dentum", key: "Dentum" }
+                    ];
+                    const curS9 = s9Sounds[state.slide9AudioIdx];
+                    return `
+                    <div class="w-full h-full flex items-center gap-3">
+                        <div class="w-44 hidden sm:flex flex-col gap-1.5 shrink-0">
+                            ${['Dengarkan Suara', 'Cocokkan Alat Musik', 'Kelompokkan Cara Memainkan', 'Identifikasi Sumber Getar'].map((t, idx) => `
+                            <button onclick="state.slide9Tab=${idx}; goToSlide(9)" class="px-3 py-2 rounded-xl font-game font-bold text-xs text-left border-2 ${state.slide9Tab === idx ? 'bg-amber-500 text-white border-white shadow' : 'wood-panel text-amber-100'}">
+                                ${idx + 1}. ${t}
+                            </button>`).join('')}
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5 text-center">
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="state.slide9AudioIdx=(state.slide9AudioIdx+2)%3; goToSlide(9)" class="btn-3d-blue px-3 py-1 rounded-xl text-white font-bold text-xs">◀ Sebelumnya</button>
+                                <div class="wood-panel px-4 py-1.5 rounded-2xl font-game font-bold text-xs sm:text-sm text-amber-200">${curS9.title}</div>
+                                <button onclick="state.slide9AudioIdx=(state.slide9AudioIdx+1)%3; goToSlide(9)" class="btn-3d-blue px-3 py-1 rounded-xl text-white font-bold text-xs">Berikutnya ▶</button>
+                            </div>
+                            <button onclick="playSoundEffect('${curS9.type}')" class="btn-3d-orange px-6 py-2 rounded-full font-game font-bold text-white text-xs sm:text-sm">🔊 Putar Audio</button>
+                            <div class="grid grid-cols-3 gap-2.5">
+                                ${['Nada', 'Desah', 'Dentum'].map(cat => `
+                                <button onclick="state.slide9Category='${cat}'; checkSlide9Category('${cat}', '${curS9.key}')" class="p-2.5 rounded-2xl border-2 font-game font-bold text-xs ${state.slide9Category === cat ? 'bg-emerald-600 text-white border-emerald-900' : 'bg-white text-amber-950 border-amber-500'}">
+                                    ${cat}
+                                </button>`).join('')}
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="Tulis alasanmu di sini..." class="flex-1 px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white text-xs font-semibold">
+                                <button onclick="awardTaskStar(2, 's9_done', 1); goToSlide(2)" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">🏁 Selesai Stage 2</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 10:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="hidden md:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('buguru', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">Bu Guru</span>
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-3">
+                            <p class="text-xs sm:text-sm font-bold text-amber-950 bg-amber-100 p-3 rounded-2xl border border-amber-500">
+                                🔬 "Selamat datang di <b>Sonic Lab</b>! Kalian akan menyelidiki bagaimana bunyi merambat dan mengapa benda dapat menghasilkan nada yang berbeda. Buat prediksi, lakukan percobaan, amati hasilnya, lalu jelaskan penemuan kalian berdasarkan bukti."
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                ${[
+                                    { title: 'Telepon Gelas Misterius', key: 'telepon_kaleng', target: 11 },
+                                    { title: 'Xylophone Air', key: 'botol_air', target: 17 },
+                                    { title: 'Jalur Rahasia Bunyi', key: 'membran_drum', target: 12 },
+                                    { title: 'Berburu Alat Musik', key: 'gitar', target: 13 }
+                                ].map(c => `
+                                <div onclick="awardTaskStar(3, 's10_brief', 1); goToSlide(${c.target})" class="cursor-pointer bg-white hover:bg-sky-50 border-2 border-sky-600 rounded-2xl p-2.5 flex flex-col items-center justify-between h-32 shadow-sm transition">
+                                    ${renderItemVisualBox(c.key, c.title)}
+                                    <span class="font-game font-bold text-xs text-sky-950 text-center">${c.title}</span>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 11:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-3 text-center">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="px-3 py-1 rounded-xl bg-amber-200 font-bold text-xs text-amber-950">🧰 Alat & Bahan: 2 gelas plastik dan tali</span>
+                                <div class="flex gap-2">
+                                    <button onclick="state.slide11String='Tegang'; goToSlide(11)" class="px-4 py-1.5 rounded-xl font-game font-bold text-xs border-2 ${state.slide11String === 'Tegang' ? 'bg-emerald-600 text-white border-emerald-900' : 'bg-white text-amber-950 border-amber-500'}">Tali Tegang</button>
+                                    <button onclick="state.slide11String='Kendur'; goToSlide(11)" class="px-4 py-1.5 rounded-xl font-game font-bold text-xs border-2 ${state.slide11String === 'Kendur' ? 'bg-rose-600 text-white border-rose-900' : 'bg-white text-amber-950 border-amber-500'}">Tali Kendur</button>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 rounded-2xl p-4 border-4 border-amber-700 flex items-center justify-center">
+                                <svg viewBox="0 0 500 110" class="w-full max-w-lg h-24">
+                                    <rect x="30" y="25" width="55" height="60" rx="8" fill="#38BDF8" stroke="#FFFFFF" stroke-width="3"/>
+                                    <rect x="415" y="25" width="55" height="60" rx="8" fill="#F43F5E" stroke="#FFFFFF" stroke-width="3"/>
+                                    ${state.slide11String === 'Tegang'
+                                        ? `<line x1="85" y1="55" x2="415" y2="55" stroke="#FACC15" stroke-width="5"/>`
+                                        : `<path d="M85 55 Q250 115 415 55" stroke="#94A3B8" stroke-width="5" fill="none"/>`}
+                                </svg>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 bg-amber-100 p-2.5 rounded-2xl border border-amber-500">
+                                <span class="text-xs font-bold text-amber-950">❓ Bagaimana kondisi tali memengaruhi bunyi yang terdengar?</span>
+                                <button onclick="awardTaskStar(3, 's11_cup', 1); playSoundEffect(state.slide11String === 'Tegang' ? 'cup_clear' : 'cup_muffled'); showToast(state.slide11String === 'Tegang' ? 'Tali Tegang: Getaran merambat lancar, suara terdengar JERNIH!' : 'Tali Kendur: Getaran terhambat, suara TEREDAM/PELAN!', '🔊')" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">
+                                    🔊 Putar Suara (${state.slide11String})
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 12:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 grid grid-cols-1 md:grid-cols-2 gap-3 items-center">
+                            <div class="space-y-2">
+                                <div class="flex gap-2">
+                                    ${['Padat', 'Cair', 'Gas'].map(m => `
+                                    <button onclick="state.slide12Medium='${m}'; playSoundEffect('click'); goToSlide(12)" class="flex-1 py-1.5 rounded-xl font-game font-bold text-xs border-2 ${state.slide12Medium === m ? 'bg-sky-600 text-white border-sky-900' : 'bg-white text-amber-950 border-amber-500'}">${m}</button>`).join('')}
+                                </div>
+                                <div class="bg-slate-900 rounded-2xl p-3 text-amber-200 text-xs font-semibold border-2 border-amber-600">
+                                    ${state.slide12Medium === 'Padat' ? '🪵 <b>Medium Padat:</b> Partikel sangat rapat! Getaran diteruskan paling cepat dari satu partikel ke partikel lainnya.' : state.slide12Medium === 'Cair' ? '💧 <b>Medium Cair:</b> Partikel cukup rapat. Bunyi merambat di dalam air (contoh: sonar lumba-lumba).' : '💨 <b>Medium Gas (Udara):</b> Partikel renggang. Bunyi percakapan merambat melalui gelombang udara.'}
+                                </div>
+                                <div class="bg-rose-100 border border-rose-400 rounded-xl p-2 text-[11px] font-bold text-rose-950">
+                                    🚀 <b>Mengapa bunyi tidak merambat di ruang hampa?</b> Karena tidak ada partikel medium yang meneruskan getaran!
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs">
+                                <div class="font-game font-bold text-amber-950">Pasangkan Contoh Perambatan Bunyi:</div>
+                                ${[
+                                    { id: 'palu', label: 'Palu diketuk di meja', ans: 'Padat' },
+                                    { id: 'air', label: 'Suara ketukan di dalam air', ans: 'Cair' },
+                                    { id: 'cakap', label: 'Percakapan dua teman', ans: 'Gas' },
+                                    { id: 'peluit', label: 'Suara peluit di lapangan', ans: 'Gas' }
+                                ].map(row => `
+                                <div class="flex items-center justify-between bg-white px-3 py-1.5 rounded-xl border border-amber-400">
+                                    <span class="font-bold">${row.label}</span>
+                                    <select onchange="state.slide12Matches['${row.id}']=this.value; awardTaskStar(3, 's12_med', 1);" class="px-2 py-0.5 rounded-lg border border-amber-600 font-bold bg-amber-50">
+                                        <option value="">Pilih...</option>
+                                        ${['Padat', 'Cair', 'Gas'].map(op => `<option value="${op}" ${state.slide12Matches[row.id] === op ? 'selected' : ''}>${op}</option>`).join('')}
+                                    </select>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 13:
+                    const instruments = [
+                        { name: 'Seruling', way: 'Ditiup', source: 'Kolom udara', sound: 'flute', key: 'burung' },
+                        { name: 'Drum', way: 'Dipukul', source: 'Membran kulit', sound: 'drum', key: 'membran_drum' },
+                        { name: 'Gitar', way: 'Dipetik', source: 'Senar/dawai', sound: 'guitar', key: 'gitar' },
+                        { name: 'Biola', way: 'Digesek', source: 'Senar/dawai', sound: 'flute', key: 'senar_gitar' },
+                        { name: 'Angklung', way: 'Digoyangkan', source: 'Tabung bambu', sound: 'bell', key: 'botol_air' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-3">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5">
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                                ${instruments.map(ins => `
+                                <div onclick="playSoundEffect('${ins.sound}'); awardTaskStar(3, 's13_ins', 2);" class="cursor-pointer bg-white hover:bg-amber-50 border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center justify-between h-40 shadow-sm text-center">
+                                    ${renderItemVisualBox(ins.key, ins.name)}
+                                    <div class="font-game font-bold text-xs text-amber-950">${ins.name}</div>
+                                    <div class="text-[10px] font-bold text-sky-800">${ins.way} • ${ins.source}</div>
+                                    <span class="px-2 py-0.5 rounded-full bg-amber-500 text-white font-bold text-[10px]">▶ Putar</span>
+                                </div>`).join('')}
+                            </div>
+                            <div class="flex items-center justify-between bg-amber-100 px-3 py-2 rounded-2xl border border-amber-500">
+                                <span class="text-xs font-bold text-amber-950">🎵 Klik tiap kartu untuk mendengar karakteristik bunyi & sumber getarnya!</span>
+                                <button onclick="awardTaskStar(3, 's13_done', 1); goToSlide(2)" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">🏁 Selesai Stage 3</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 14:
+                    const opts14 = [
+                        { id: 'A', text: 'Senar berubah warna' },
+                        { id: 'B', text: 'Senar mengalami getaran' },
+                        { id: 'C', text: 'Udara berhenti bergerak' },
+                        { id: 'D', text: 'Gitar menyerap semua bunyi' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="hidden md:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('pakguru', 'w-24 h-32')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">Pak Guru</span>
+                        </div>
+                        <div class="flex-1 parchment-panel rounded-3xl p-5 space-y-3">
+                            <div class="font-game font-bold text-base text-amber-950">⚔️ SOUND CHALLENGE: "Ketika senar gitar dipetik, bunyi muncul karena …."</div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                ${opts14.map(o => `
+                                <button onclick="state.slide14Option='${o.id}'; goToSlide(14)" class="p-3 rounded-2xl border-2 text-left font-bold text-xs sm:text-sm flex items-center gap-2 ${state.slide14Option === o.id ? 'bg-purple-700 text-white border-purple-950 shadow-lg' : 'bg-white text-amber-950 border-amber-500 hover:bg-amber-50'}">
+                                    <span class="w-7 h-7 rounded-full bg-amber-400 text-amber-950 font-game font-extrabold flex items-center justify-center shrink-0">${o.id}</span>
+                                    <span>${o.text}</span>
+                                </button>`).join('')}
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="checkSlide14Quiz()" class="btn-3d-orange px-6 py-2 rounded-xl font-game font-bold text-white text-xs sm:text-sm">Periksa Jawaban</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 15:
+                    const pairs15 = [
+                        { id: 'gitar', left: 'Senar gitar', right: 'Bergetar ketika dipetik' },
+                        { id: 'gelas', left: 'Telepon gelas', right: 'Getaran diteruskan melalui tali' },
+                        { id: 'gema', left: 'Gema', right: 'Bunyi pantul terdengar terpisah dari bunyi asli' },
+                        { id: 'seruling', left: 'Seruling', right: 'Kolom udara bergetar' },
+                        { id: 'botol', left: 'Botol yang diketuk', right: 'Menghasilkan bunyi melalui getaran sistem botol' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-game font-bold text-sm text-amber-950">🔗 Pasangkan Konsep Bunyi Berikut dengan Tepat:</span>
+                                <button onclick="awardTaskStar(4, 's15_match', 1); playSoundEffect('fanfare'); showToast('Pasangan konsep berhasil diverifikasi! +1 Bintang Stage 4', '⭐')" class="btn-3d-orange px-4 py-1 rounded-xl font-game font-bold text-white text-xs">Periksa Jawaban</button>
+                            </div>
+                            <div class="space-y-1.5 text-xs">
+                                ${pairs15.map(p => `
+                                <div class="flex flex-wrap items-center justify-between gap-2 bg-white px-3 py-1.5 rounded-xl border border-amber-400">
+                                    <span class="font-extrabold text-amber-950">${p.left}</span>
+                                    <span class="text-emerald-800 font-bold">➔ ${p.right}</span>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 16:
+                    const guessOpts = [
+                        { name: 'Gitar', key: 'gitar' },
+                        { name: 'Drum', key: 'membran_drum' },
+                        { name: 'Seruling', key: 'burung' },
+                        { name: 'Lonceng', key: 'bel' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-3 text-center">
+                            <div class="font-game font-bold text-sm text-amber-950">🎧 GUESS THE SOUND: Dengarkan suara misteri berikut lalu tebak alat musiknya!</div>
+                            <button onclick="playSoundEffect('flute')" class="btn-3d-blue px-6 py-2 rounded-full font-game font-bold text-white text-xs sm:text-sm">🔊 Putar Misteri Suara</button>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                ${guessOpts.map(g => `
+                                <div onclick="state.slide16Choice='${g.name}'; goToSlide(16)" class="cursor-pointer rounded-2xl p-2 border-2 flex flex-col items-center justify-between h-32 ${state.slide16Choice === g.name ? 'bg-purple-700 text-white border-purple-950 scale-105 shadow-lg' : 'bg-white text-amber-950 border-amber-500'}">
+                                    ${renderItemVisualBox(g.key, g.name)}
+                                    <span class="font-game font-bold text-xs">${g.name}</span>
+                                </div>`).join('')}
+                            </div>
+                            <button onclick="if(state.slide16Choice==='Seruling'){awardTaskStar(4,'s16_guess',1);playSoundEffect('fanfare');showToast('Tepat sekali! Itu adalah bunyi Seruling.','🎉');}else{showToast('Coba dengarkan lagi alunan tiupannya!','💡');}" class="btn-3d-orange px-6 py-1.5 rounded-xl font-game font-bold text-white text-xs">Periksa Jawaban</button>
+                        </div>
+                    </div>`;
+
+                case 17:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="font-game font-bold text-xs sm:text-sm text-amber-950">🏆 FINAL BOSS: Eksperimen Xylophone 5 Botol Air (Klik botol untuk membunyikan!)</div>
+                                <div class="flex gap-2">
+                                    <button onclick="state.slide17Mode='Ketuk Botol'; goToSlide(17)" class="px-3 py-1 rounded-xl font-game font-bold text-xs border-2 ${state.slide17Mode === 'Ketuk Botol' ? 'bg-amber-600 text-white border-amber-950' : 'bg-white text-amber-950 border-amber-500'}">🥄 Ketuk Botol</button>
+                                    <button onclick="state.slide17Mode='Tiup Botol'; goToSlide(17)" class="px-3 py-1 rounded-xl font-game font-bold text-xs border-2 ${state.slide17Mode === 'Tiup Botol' ? 'bg-sky-600 text-white border-sky-950' : 'bg-white text-amber-950 border-amber-500'}">💨 Tiup Botol</button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-5 gap-2 bg-slate-900 p-3 rounded-2xl border-2 border-amber-600">
+                                ${[85, 68, 52, 36, 20].map((lvl, idx) => `
+                                <div onclick="playBottleNote(${idx})" class="cursor-pointer flex flex-col items-center group">
+                                    <div class="w-12 h-24 rounded-b-xl rounded-t-md border-2 border-sky-200 bg-sky-950/50 relative overflow-hidden flex items-end group-hover:scale-105 transition">
+                                        <div style="height:${lvl}%" class="w-full bg-gradient-to-t from-sky-500 to-cyan-300"></div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-amber-200 mt-1">Botol ${idx + 1} (${lvl}%)</span>
+                                </div>`).join('')}
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" value="${state.slide17Notes}" oninput="state.slide17Notes=this.value" placeholder="Jelaskan langkah percobaan & bukti mengapa tinggi nada tiap botol berbeda..." class="flex-1 px-3 py-1.5 rounded-xl border-2 border-amber-700 bg-white text-xs font-semibold">
+                                <button onclick="awardTaskStar(4, 's17_boss', 1); playSoundEffect('fanfare'); goToSlide(2)" class="btn-3d-orange px-5 py-1.5 rounded-xl font-game font-bold text-white text-xs">Kumpulkan Jawaban</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 18:
+                    const missions = [
+                        { id: 'Misi A: Sonic Maker', desc: 'Membuat telepon gelas atau alat musik sederhana.' },
+                        { id: 'Misi B: Sonic Illustrator', desc: 'Poster atau infografik tentang bunyi.' },
+                        { id: 'Misi C: Sonic Performer', desc: 'Pertunjukan musik sederhana dari botol air.' },
+                        { id: 'Misi D: Sonic Storyteller', desc: 'Video atau rekaman penjelasan tentang bunyi.' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-3">
+                            <p class="text-xs sm:text-sm font-bold text-amber-950">🎨 "Sekarang saatnya kamu menunjukkan hasil belajarmu! Pilih salah satu misi sesuai minat dan kemampuanmu."</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                                ${missions.map(ms => `
+                                <div class="bg-white border-2 border-amber-500 rounded-2xl p-3 flex flex-col justify-between space-y-2 shadow-sm">
+                                    <div>
+                                        <div class="font-game font-bold text-sm text-amber-950">${ms.id}</div>
+                                        <p class="text-xs text-amber-800 mt-1">${ms.desc}</p>
+                                    </div>
+                                    <button onclick="state.slide18Mission='${ms.id}'; awardTaskStar(5, 's18_mis', 1); goToSlide(19)" class="btn-3d-orange w-full py-1.5 rounded-xl font-game font-bold text-white text-xs">Pilih Misi</button>
+                                </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 19:
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5 text-xs">
+                            <div class="font-game font-bold text-sm text-amber-950">📤 UPLOAD YOUR CREATION: Galeri Karya (${state.slide18Mission})</div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <input type="text" value="${state.playerName}" class="px-3 py-1.5 rounded-xl border-2 border-amber-600 bg-white font-bold" placeholder="Nama Peserta Didik">
+                                <input type="text" value="${state.slide19Title}" oninput="state.slide19Title=this.value" class="px-3 py-1.5 rounded-xl border-2 border-amber-600 bg-white font-bold" placeholder="Judul Karya">
+                            </div>
+                            <textarea rows="2" oninput="state.slide19Desc=this.value" class="w-full px-3 py-1.5 rounded-xl border-2 border-amber-600 bg-white font-semibold" placeholder="Deskripsi singkat karyamu...">${state.slide19Desc}</textarea>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${['📷 Foto', '🎬 Video', '📄 Dokumen', '🎙️ Rekaman', '🔗 Tautan'].map(b => `<span class="px-3 py-1 rounded-xl bg-amber-100 border border-amber-500 font-bold">${b}</span>`).join('')}
+                                </div>
+                                <button onclick="awardTaskStar(5, 's19_up', 1); playSoundEffect('fanfare'); showToast('Karya berhasil dikirim ke Galeri Sonic Expo!', '🎉'); setTimeout(()=>goToSlide(20), 1200);" class="btn-3d-orange px-6 py-1.5 rounded-xl font-game font-bold text-white text-xs">Kirim Karya</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 20:
+                    const emojis = [
+                        { id: 1, icon: '😟', text: 'Saya masih membutuhkan bantuan' },
+                        { id: 2, icon: '🙂', text: 'Saya mulai memahami' },
+                        { id: 3, icon: '😄', text: 'Saya sudah memahami dan dapat menjelaskan' },
+                        { id: 4, icon: '🤩', text: 'Saya dapat menerapkan konsep dalam percobaan baru' }
+                    ];
+                    return `
+                    <div class="w-full h-full flex items-center gap-4">
+                        <div class="flex-1 parchment-panel rounded-3xl p-4 space-y-2.5 text-xs">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <input type="text" value="${state.slide20New}" oninput="state.slide20New=this.value" placeholder="Apa pengetahuan baru tentang bunyi yang kamu dapatkan?" class="px-3 py-2 rounded-xl border-2 border-amber-600 bg-white font-semibold">
+                                <input type="text" value="${state.slide20Best}" oninput="state.slide20Best=this.value" placeholder="Apa penemuan paling menarik bagimu?" class="px-3 py-2 rounded-xl border-2 border-amber-600 bg-white font-semibold">
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                ${emojis.map(em => `
+                                <button onclick="state.slide20Self=${em.id}; goToSlide(20)" class="p-2 rounded-2xl border-2 flex flex-col items-center text-center gap-1 ${state.slide20Self === em.id ? 'bg-amber-500 text-white border-amber-900 shadow' : 'bg-white text-amber-950 border-amber-400'}">
+                                    <span class="text-2xl">${em.icon}</span>
+                                    <span class="font-bold text-[10px] leading-tight">${em.text}</span>
+                                </button>`).join('')}
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="awardTaskStar(5, 's20_ref', 2); playSoundEffect('fanfare'); goToSlide(21)" class="btn-3d-orange px-6 py-2 rounded-xl font-game font-bold text-white text-xs sm:text-sm">Simpan Refleksi ➔ Sertifikat</button>
+                            </div>
+                        </div>
+                    </div>`;
+
+                case 21:
+                    return `
+                    <div class="w-full h-full flex items-center justify-center gap-4">
+                        <div class="hidden md:flex flex-col items-center shrink-0">
+                            ${getCharacterSVG('player', 'w-28 h-36')}
+                            <span class="wood-panel px-3 py-0.5 rounded-full text-xs font-bold -mt-1">${state.playerName}</span>
+                        </div>
+                        <div class="max-w-2xl w-full parchment-panel rounded-3xl p-4 sm:p-5 text-center space-y-2 border-4 border-amber-500 shadow-2xl">
+                            <div class="flex justify-center gap-1.5 flex-wrap">
+                                ${['🏅 Penjelajah', '🏅 Eksplorator', '🏅 Ilmuwan', '🏅 Kreator', '🏅 Detektif'].map(b => `<span class="px-2.5 py-0.5 rounded-full bg-amber-400/30 border border-amber-700 font-game font-bold text-[10px] text-amber-950">${b}</span>`).join('')}
+                            </div>
+                            <h2 class="font-game text-xl sm:text-2xl font-extrabold text-amber-900">🏆 SERTIFIKAT PENJELAJAH BUNYI 🏆</h2>
+                            <p class="text-xs font-bold text-amber-800">Diberikan dengan bangga kepada:</p>
+                            <div class="font-game text-2xl sm:text-3xl font-extrabold text-sky-900 underline decoration-amber-500">${state.playerName}</div>
+                            <p class="text-xs text-amber-950 font-semibold">Telah menyelesaikan ekspedisi 5 pulau <b>LENTERA – Petualangan Bunyi</b> (${state.className}) dan mampu menjelaskan fenomena bunyi berdasarkan bukti ilmiah.</p>
+                            <div class="text-[10px] font-bold text-amber-900 pt-1 border-t border-amber-700/20">
+                                Pengembang MPI: ${state.devName}
+                            </div>
+                            <div class="pt-1">
+                                <button onclick="playSoundEffect('fanfare'); goToSlide(2)" class="btn-3d-orange px-8 py-2 rounded-full font-game font-bold text-white text-xs sm:text-sm">🏁 Selesai (Kembali ke Peta)</button>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+        }
+
+        /* ==============================================================
+           EVALUASI & MODAL HELPERS
+        ============================================================== */
+        function checkSlide5Prediction() {
+            if (state.slide5Choice === 'Benda bergetar') {
+                awardTaskStar(1, 's5_pred', 1);
+                playSoundEffect('fanfare');
+                showToast("Prediksimu tepat! Bunyi dihasilkan oleh benda yang bergetar. Ayo buktikan lewat eksperimen!", "✅");
+            } else {
+                showToast("Prediksimu tersimpan! Ayo kita buktikan kebenarannya lewat eksperimen.", "💡");
+            }
+        }
+
+        function checkSlide8Frequency() {
+            const keyMap = {
+                Gajah: 'Infrasonik', Paus: 'Infrasonik',
+                'Nada Piano': 'Audiosonik', Nyamuk: 'Audiosonik',
+                Anjing: 'Ultrasonik', Kelelawar: 'Ultrasonik'
+            };
+            let correct = 0;
+            Object.keys(keyMap).forEach(k => {
+                if (state.slide8Bins[k] === keyMap[k]) correct++;
+            });
+            awardTaskStar(2, 's8_freq', 2);
+            playSoundEffect('fanfare');
+            showToast(`Kamu menjawab ${correct}/6 kategori frekuensi dengan tepat!`, "🎯");
+        }
+
+        function checkSlide9Category(chosen, expected) {
+            if (chosen === expected) {
+                awardTaskStar(2, 's9_cat', 1);
+                playSoundEffect('fanfare');
+                showToast(`Benar! Suara tersebut termasuk kategori ${expected}.`, "✅");
+            } else {
+                showToast(`Belum tepat, coba dengarkan kembali keteraturan getarannya!`, "💡");
+            }
+            goToSlide(9);
+        }
+
+        function checkSlide14Quiz() {
+            if (state.slide14Option === 'B') {
+                awardTaskStar(4, 's14_quiz', 1);
+                playSoundEffect('fanfare');
+                showToast("Tepat sekali! Senar gitar menghasilkan bunyi karena mengalami getaran.", "🎉");
+            } else {
+                showToast("Belum tepat! Ingat kembali syarat utama terjadinya bunyi.", "❌");
+            }
+        }
+
+        function openInfoModal(tab = 'petunjuk') {
+            playSoundEffect('click');
+            document.getElementById('info-modal').classList.remove('hidden');
+            renderDeveloperMedallionCanvas();
+            switchInfoTab(tab);
+        }
+
+        function closeInfoModal() {
+            playSoundEffect('click');
+            document.getElementById('info-modal').classList.add('hidden');
+        }
+
+        function switchInfoTab(tab) {
+            ['petunjuk', 'tujuan', 'pengembang'].forEach(t => {
+                const el = document.getElementById(`info-tab-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (el) el.classList.toggle('hidden', t !== tab);
+                if (btn) {
+                    btn.className = t === tab
+                        ? 'px-3 py-1.5 rounded-xl font-game font-bold text-xs bg-amber-600 text-white shadow'
+                        : 'px-3 py-1.5 rounded-xl font-game font-bold text-xs bg-amber-100 text-amber-900 border border-amber-400';
+                }
+            });
+        }
+
+        function openSettingsAuthModal() {
+            playSoundEffect('click');
+            if (state.teacherUnlocked) {
+                openTeacherModal();
+                return;
+            }
+            document.getElementById('teacher-password-input').value = '';
+            document.getElementById('teacher-password-error').classList.add('hidden');
+            document.getElementById('settings-auth-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsAuthModal() {
+            document.getElementById('settings-auth-modal').classList.add('hidden');
+        }
+
+        function verifyTeacherPassword() {
+            const val = document.getElementById('teacher-password-input').value.trim();
+            if (val === 'lentera2026') {
+                state.teacherUnlocked = true;
+                closeSettingsAuthModal();
+                openTeacherModal();
+                playSoundEffect('fanfare');
+                showToast("Akses Pengaturan Guru dibuka!", "🔓");
+            } else {
+                document.getElementById('teacher-password-error').classList.remove('hidden');
+            }
+        }
+
+        function openTeacherModal() {
+            const jumpGrid = document.getElementById('quick-slide-jump');
+            if (jumpGrid) {
+                let html = '';
+                for (let i = 1; i <= 21; i++) {
+                    html += `<button onclick="closeTeacherModal(); goToSlide(${i})" class="p-1.5 rounded-lg border border-amber-600 font-bold text-xs ${state.currentSlide === i ? 'bg-amber-600 text-white' : 'bg-white text-amber-950 hover:bg-amber-100'}">Slide ${i}</button>`;
+                }
+                jumpGrid.innerHTML = html;
+            }
+            document.getElementById('teacher-modal').classList.remove('hidden');
+        }
+
+        function closeTeacherModal() {
+            document.getElementById('teacher-modal').classList.add('hidden');
+        }
+
+        function saveTeacherConfig() {
+            const dev = document.getElementById('input-dev-name').value.trim();
+            const cls = document.getElementById('input-class-name').value.trim();
+            if (dev) state.devName = dev;
+            if (cls) state.className = cls;
+            closeTeacherModal();
+            goToSlide(state.currentSlide);
+            showToast("Pengaturan berhasil disimpan!", "✅");
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            goToSlide(1);
+            // Preload karakter 3D & peta di latar belakang
+            setTimeout(() => {
+                requestSilentNanoBananaSlide(2);
+                requestSilentNanoBananaCharacter('boy_student');
+                requestSilentNanoBananaCharacter('girl_student');
+                requestSilentNanoBananaCharacter('pakguru');
+                requestSilentNanoBananaCharacter('buguru');
+            }, 600);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+:root {
+  --font-title: 'Fredoka', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  user-select: none;
+  color: #1e293b;
+}
+
+.font-game {
+  font-family: var(--font-title);
+}
+
+.font-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.wood-panel {
+  background: linear-gradient(180deg, #8d5b3c 0%, #5c3822 100%);
+  border: 2.5px solid #3e2414;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.25), 0 5px 12px rgba(0, 0, 0, 0.42);
+  color: #fff8e7;
+}
+
+.wood-sign-3d {
+  background: linear-gradient(180deg, #9c6334 0%, #6e421f 55%, #4e2c12 100%);
+  border: 2.5px solid #361c09;
+  box-shadow: inset 0 2px 1px rgba(255, 230, 180, 0.42), 0 6px 12px rgba(0, 0, 0, 0.5);
+  color: #fffbeb;
+}
+
+.star-pill-3d {
+  background: linear-gradient(180deg, #432818 0%, #26150b 100%);
+  border: 2px solid #b08968;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.72), 0 4px 8px rgba(0, 0, 0, 0.42);
+}
+
+.parchment-panel {
+  background: linear-gradient(180deg, #fffdf6 0%, #fdecce 100%);
+  border: 3.5px solid #8d5b3c;
+  box-shadow: inset 0 0 18px rgba(180, 120, 60, 0.14), 0 10px 24px rgba(0, 0, 0, 0.36);
+  color: #2d1b0e;
+}
+
+.btn-3d-orange {
+  background: linear-gradient(180deg, #ff9f1c 0%, #f77f00 100%);
+  border: 2.5px solid #fff3b0;
+  box-shadow: 0 4px 0 #b54800, 0 7px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), filter 0.14s ease, box-shadow 0.14s ease;
+}
+.btn-3d-orange:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+.btn-3d-orange:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #b54800, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn-3d-blue {
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  border: 2.5px solid #e0f2fe;
+  box-shadow: 0 4px 0 #0369a1, 0 7px 14px rgba(0, 0, 0, 0.3);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), filter 0.14s ease, box-shadow 0.14s ease;
+}
+.btn-3d-blue:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+.btn-3d-blue:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #0369a1;
+}
+
+.btn-3d-green {
+  background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+  border: 2.5px solid #dcfce7;
+  box-shadow: 0 4px 0 #15803d, 0 7px 14px rgba(0, 0, 0, 0.3);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), filter 0.14s ease, box-shadow 0.14s ease;
+}
+.btn-3d-green:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+.btn-3d-green:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #15803d;
+}
+
+.prop-visual-box {
+  width: 68px;
+  height: 68px;
+  min-width: 68px;
+  min-height: 68px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #fef3c7 65%, #fde68a 100%);
+  border: 2px solid #d97706;
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.95), inset 0 -2px 5px rgba(180, 83, 9, 0.2), 0 4px 10px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+  position: relative;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float {
+  animation: floatSlow 3.4s ease-in-out infinite;
+}
+
+@keyframes vibrateString {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2.5px) scaleY(1.02); }
+  75% { transform: translateX(2.5px) scaleY(0.98); }
+}
+
+.vibrate-active {
+  animation: vibrateString 0.1s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .vibrate-active {
+    animation: none;
+  }
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #8d5b3c;
+  border-radius: 9999px;
+}
